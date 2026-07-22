@@ -138,7 +138,7 @@
         <li data-i18n-html="privacy_li1"><b>お気に入り（いいね）</b>：お使いのブラウザ内の <code>localStorage</code> にのみ保存され、<b>外部サーバーには送信されません</b>。ブラウザのデータを消すと消去されます。</li>
         <li data-i18n-html="privacy_li2"><b>個人情報の収集</b>：会員登録・ログイン機能はなく、氏名やメールアドレス等を当サイトが直接収集・保存することはありません。</li>
         <li data-i18n-html="privacy_li3"><b>お問い合わせ</b>：お問い合わせフォームは <b>SSGform</b>（国産の外部フォーム送信サービス）を利用しています。送信内容は SSGform 上で処理されます（SSGform のプライバシーポリシーが適用されます）。</li>
-        <li data-i18n-html="privacy_li4"><b>アクセス解析</b>：現在、当サイトのページに外部のアクセス解析ツールは導入していません。導入する場合も、<b>Cookie は使用せず</b>個人を特定しない集計のみを行います。</li>
+        <li data-i18n-html="privacy_li4"><b>アクセス解析</b>：閲覧状況の把握のため <b>Counter.dev</b>（プライバシー配慮型のアクセス解析）を利用しています。<b>Cookie は使用せず</b>、個人を特定する情報は取得しません。</li>
         <li data-i18n-html="privacy_li5"><b>Cookie / ローカル保存</b>：上記の目的以外で利用者を追跡する目的の Cookie は使用しません。</li>
       </ul>
       <p class="muted" data-i18n="privacy_updated">本ポリシーは予告なく変更される場合があります。最終更新：2026-07-22</p>
@@ -214,7 +214,7 @@ var I18N={
   privacy_li1:{ja:'<b>お気に入り（いいね）</b>：お使いのブラウザ内の <code>localStorage</code> にのみ保存され、<b>外部サーバーには送信されません</b>。ブラウザのデータを消すと消去されます。',en:'<b>Favorites (likes)</b>: stored only in your browser’s <code>localStorage</code> and <b>never sent to an external server</b>. Clearing your browser data erases them.'},
   privacy_li2:{ja:'<b>個人情報の収集</b>：会員登録・ログイン機能はなく、氏名やメールアドレス等を当サイトが直接収集・保存することはありません。',en:'<b>Collection of personal data</b>: there is no sign-up or login, and this site does not directly collect or store your name, email, etc.'},
   privacy_li3:{ja:'<b>お問い合わせ</b>：お問い合わせフォームは <b>SSGform</b>（国産の外部フォーム送信サービス）を利用しています。送信内容は SSGform 上で処理されます（SSGform のプライバシーポリシーが適用されます）。',en:'<b>Contact</b>: the contact form uses <b>SSGform</b> (an external form-delivery service based in Japan). Submissions are processed on SSGform (its own privacy policy applies).'},
-  privacy_li4:{ja:'<b>アクセス解析</b>：現在、当サイトのページに外部のアクセス解析ツールは導入していません。導入する場合も、<b>Cookie は使用せず</b>個人を特定しない集計のみを行います。',en:'<b>Analytics</b>: this site currently embeds no third-party analytics in its pages. If introduced later, it will use <b>no cookies</b> and collect only data that does not identify individuals.'},
+  privacy_li4:{ja:'<b>アクセス解析</b>：閲覧状況の把握のため <b>Counter.dev</b>（プライバシー配慮型のアクセス解析）を利用しています。<b>Cookie は使用せず</b>、個人を特定する情報は取得しません。',en:'<b>Analytics</b>: this site uses <b>Counter.dev</b> (a privacy-friendly analytics tool) to understand usage. It uses <b>no cookies</b> and collects no information that identifies individuals.'},
   privacy_li5:{ja:'<b>Cookie / ローカル保存</b>：上記の目的以外で利用者を追跡する目的の Cookie は使用しません。',en:'<b>Cookies / local storage</b>: no cookies are used to track you for purposes beyond the above.'},
   privacy_updated:{ja:'本ポリシーは予告なく変更される場合があります。最終更新：2026-07-22',en:'This policy may change without notice. Last updated: 2026-07-22'},
   contact_h2:{ja:'お問い合わせ',en:'Contact'},
@@ -285,5 +285,8 @@ function applyLang(){
   });
 })();
 </script>
+
+<!-- アクセス解析：Counter.dev（Cookie不使用・個人を特定しない） -->
+<script src="https://cdn.counter.dev/script.js" data-id="51acfa4d-98ed-463c-8f8a-02055d8481c4" data-utcoffset="9"></script>
 </body>
 </html>
