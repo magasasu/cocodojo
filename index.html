@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CODING NEON — 動くコード辞書｜HTML・CSS・JavaScript・jQuery</title>
+<meta name="description" content="CODING NEON は、HTML・CSS・JavaScript・jQuery を引いてその場で動かせる無料のコード辞書。タグ・プロパティ・命令の意味を、丁寧な説明とすぐ動くプレビューで確かめられます。「読んでも分からない」を「見れば分かる」に。">
+<meta name="author" content="Shoma Ito">
+<meta name="theme-color" content="#0B0913">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- ★公開前に対応：YOUR-DOMAIN.example を実際の公開ドメインへ置換（canonical / og:url / og:image / twitter:image の4箇所）。
+     og:image は絶対URL必須：SNSのサーバーはサイトの外から読みに来るため、相対パスだと画像を取得できない -->
+<link rel="canonical" href="https://magasasu.github.io/js_dojo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CODING NEON">
+<meta property="og:title" content="CODING NEON — 動くコード辞書">
+<meta property="og:description" content="HTML・CSS・JavaScript・jQuery を引いて、その場で動かして確かめられる無料のコード辞書。">
+<meta property="og:image" content="https://magasasu.github.io/js_dojo/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://magasasu.github.io/js_dojo/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CODING NEON — 動くコード辞書">
+<meta name="twitter:description" content="HTML・CSS・JavaScript・jQuery を引いて、その場で動かして確かめられる無料のコード辞書。">
+<meta name="twitter:image" content="https://magasasu.github.io/js_dojo/ogp.png">
+<link rel="stylesheet" href="css/js_dojo.css"></head>
+<body>
+
+<a class="skip-link" href="#descTitle" data-i18n="skip">本文へスキップ</a>
+
+<header class="header">
+  <h1 class="logo"><img class="logo-icon" src="favicon.svg" alt="" width="22" height="22">CODING <b>NEON</b></h1>
+  <span class="tagline" data-i18n="tagline">動くコード辞書 — HTML / CSS / JavaScript / jQuery を引いて、その場で動かせます</span>
+  <span class="spacer"></span>
+  <span class="clock" id="clock">----年--月--日--時--分--秒</span>
+  <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch to English">EN</button>
+  <a class="about-link header-about" href="about.html" data-i18n="about">◇ このサイトについて</a>
+  <button class="menu-toggle" id="menuToggle" type="button" data-i18n="menu" aria-label="項目メニューを開く" aria-controls="effectsPane" aria-expanded="false">☰ メニュー</button>
+</header>
+
+<div class="toolbar">
+  <a class="about-link" href="about.html" data-i18n="about">◇ このサイトについて</a>
+  <div class="right" id="controls">
+    <label class="auto"><input type="checkbox" id="autorun" checked> <span data-i18n="autorun">自動実行</span></label>
+    <button class="btn ghost" id="resetBtn" data-i18n="reset">↺ リセット</button>
+    <button class="btn primary" id="runBtn" data-i18n="run">▶ 実行</button>
+  </div>
+</div>
+
+<div class="menu-backdrop" id="menuBackdrop"></div>
+<main class="main" id="mainContent">
+  <!-- 項目を引く（左・全高／狭い画面ではハンバーガーで開閉） -->
+  <aside class="pane p-effects" id="effectsPane" role="dialog" aria-label="項目メニュー" aria-modal="false">
+    <a class="drawer-about" href="about.html" data-i18n="about">◇ このサイトについて</a>
+    <div class="phead"><h2 class="phead-title" id="headItems"><span class="dot" style="background:var(--violet)"></span><span data-i18n="pane_items">項目を選ぶ</span></h2></div>
+    <div class="search-wrap">
+      <input id="search" class="search" type="search" placeholder="検索（例: flex / 配列）" data-i18n-ph="search_ph" data-i18n-al="search_al" aria-label="全言語から項目を検索" autocomplete="off">
+      <button id="searchClear" class="search-clear" type="button" title="検索をクリア" data-i18n-tt="search_clear" data-i18n-al="search_clear" aria-label="検索をクリア" hidden>✕</button>
+    </div>
+    <!-- 言語（HTML/CSS/JS/jQuery）と難易度は別の軸。グループ見出しで区別する -->
+    <p class="group-label" id="langsLabel" data-i18n="grp_lang">言語</p>
+    <div class="langs" id="langs" role="tablist" aria-labelledby="langsLabel"></div>
+    <p class="group-label" id="tabsLabel" data-i18n="grp_level">難易度でしぼる</p>
+    <div class="tabs" id="tabs" role="tablist" aria-labelledby="tabsLabel"></div>
+    <div class="fx-list" id="list" aria-label="項目一覧"></div>
+    <noscript><p style="color:#FF6076;font-size:12px;padding:8px" data-i18n="noscript">JavaScriptを有効にしてください。</p></noscript>
+  </aside>
+
+  <div class="stack">
+    <!-- 上段：説明 / バリエーション / プレビュー（高さ揃い） -->
+    <div class="row row-top">
+      <section class="pane p-desc" aria-labelledby="descHead">
+        <div class="phead"><h2 class="phead-title"><span class="dot" style="background:var(--pink)"></span><span id="descHead">この項目の説明</span></h2><button class="sharebtn" id="shareBtn" type="button" data-i18n="share" data-i18n-tt="share_tt" title="この項目へのリンクをコピー">🔗 共有</button></div>
+        <div class="desc-body">
+          <h3 class="desc-title" id="descTitle" tabindex="-1"></h3>
+          <p class="desc-lead" id="descLead"></p>
+          <div class="tags-line" id="tagsLine"></div>
+          <p class="prep-title" data-i18n="prep_title">◆ このコードで使う言葉</p>
+          <div class="prep" id="prep"></div>
+        </div>
+      </section>
+      <aside class="pane p-vars" aria-labelledby="headVars">
+        <div class="phead"><h2 class="phead-title" id="headVars"><span class="dot" style="background:var(--gold)"></span><span data-i18n="vars">バリエーション</span></h2></div>
+        <div class="var-hint" data-i18n="var_hint">押すとコード窓に入り、すぐ反映されます。</div>
+        <div class="var-list" id="vars"></div>
+      </aside>
+      <section class="pane p-preview" aria-labelledby="prevHead">
+        <div class="phead"><h2 class="phead-title"><span class="live"></span><span id="prevHead">プレビュー（表示結果）</span></h2></div>
+        <div class="frame-pad"><iframe id="preview" sandbox="allow-scripts allow-modals" title="プレビュー"></iframe></div>
+      </section>
+    </div>
+
+    <!-- 操作ボタン：タブレット以下でバリエ・プレビューの下に表示（PCはツールバー右へ） -->
+    <div class="row-controls" id="mobileControls"></div>
+
+    <!-- 下段：ログ / JS / HTML / CSS（高さ揃い） -->
+    <div class="row row-bottom">
+      <section class="pane p-log" aria-labelledby="logLabel">
+        <div class="phead"><h2 class="phead-title"><button class="pane-toggle" type="button" aria-expanded="true"><span class="dot"></span><span id="logLabel" data-i18n="log">ログ</span></button></h2></div>
+        <div class="log" id="log" role="log" aria-live="polite"><div class="cl idle" data-i18n="log_idle">// 動かない時は、ここに原因を日本語で出します</div></div>
+      </section>
+      <section class="pane p-js" aria-labelledby="jsLabel">
+        <div class="phead"><h2 class="phead-title"><button class="pane-toggle" type="button" aria-expanded="true"><span class="dot"></span><span id="jsLabel">JavaScript</span></button></h2><button class="copybtn" type="button" data-target="edJS" data-i18n="copy" data-i18n-tt="copy_tt" title="コードをコピー">⧉ コピー</button></div>
+        <div class="editor"><pre class="hl" aria-hidden="true"><code id="hlJS"></code></pre><textarea id="edJS" spellcheck="false" aria-labelledby="jsLabel" aria-describedby="edHelp"></textarea></div>
+      </section>
+      <section class="pane p-html" aria-labelledby="htmlLabel">
+        <div class="phead"><h2 class="phead-title"><button class="pane-toggle" type="button" aria-expanded="true"><span class="dot"></span><span id="htmlLabel">HTML</span></button></h2><button class="copybtn" type="button" data-target="edHTML" data-i18n="copy" data-i18n-tt="copy_tt" title="コードをコピー">⧉ コピー</button></div>
+        <div class="editor"><pre class="hl" aria-hidden="true"><code id="hlHTML"></code></pre><textarea id="edHTML" spellcheck="false" aria-labelledby="htmlLabel" aria-describedby="edHelp"></textarea></div>
+      </section>
+      <section class="pane p-css" aria-labelledby="cssLabel">
+        <div class="phead"><h2 class="phead-title"><button class="pane-toggle" type="button" aria-expanded="true"><span class="dot"></span><span id="cssLabel">CSS</span></button></h2><button class="copybtn" type="button" data-target="edCSS" data-i18n="copy" data-i18n-tt="copy_tt" title="コードをコピー">⧉ コピー</button></div>
+        <div class="editor"><pre class="hl" aria-hidden="true"><code id="hlCSS"></code></pre><textarea id="edCSS" spellcheck="false" aria-labelledby="cssLabel" aria-describedby="edHelp"></textarea></div>
+      </section>
+    </div>
+    <!-- コード窓のキー操作の案内（3窓で共有。エディタの作法そのものが教材になる） -->
+    <p class="ed-help" id="edHelp" data-i18n="ed_help">Tab＝インデント／Esc を押してから Tab＝窓の外へ移動</p>
+  </div>
+</main>
+
+<!-- 最下部バー：著作権（左）／バージョン・最終更新・製作者（右） -->
+<footer class="ticker" id="bottomBar">
+  <span class="foot-copy">© 2026 CODING NEON</span>
+  <nav class="foot-nav" aria-label="フッター">
+    <a href="about.html" data-i18n="foot_about">このサイトについて</a>
+    <a href="about.html#privacy" data-i18n="foot_privacy">プライバシー</a>
+    <a href="about.html#contact" data-i18n="foot_contact">お問い合わせ</a>
+  </nav>
+  <span class="foot-right">
+    <span class="foot-ver" id="footVer">v0.9 «BLACK-ICE»</span>
+    <span class="foot-sep">/</span>
+    <span class="foot-upd"><span data-i18n="foot_upd">最終更新</span> <b id="lastUpdate">2026-07-22</b></span>
+    <span class="foot-sep">/</span>
+    <span class="foot-author">Created by <b>Shoma Ito</b></span>
+  </span>
+</footer>
+
+<!-- jquery.js=jQuery本体(文字列)、js_dojo.js=サイト本体のJS -->
+
+
+<script src="js/jquery.js"></script>
+<script src="js/htmlcss_categories.js"></script>
+<script src="js/js_dojo.js"></script>
+</body>
+</html>

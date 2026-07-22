@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# ★公開前に対応：YOUR-DOMAIN.example を実際の公開ドメインへ置き換える
+Sitemap: https://magasasu.github.io/js_dojo/sitemap.xml

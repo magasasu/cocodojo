@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <filter id="neon" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0B0913" stroke="#B084FF" stroke-width="2" filter="url(#neon)"/>
+  <text x="13" y="43" font-family="'Cascadia Code','Consolas',monospace" font-size="30" font-weight="800" fill="#F5C24B" filter="url(#neon)">&gt;</text>
+  <rect x="33" y="36" width="16" height="5" rx="2" fill="#4FE6E6" filter="url(#neon)">
+    <animate attributeName="opacity" values="1;1;0;0;1" dur="1.1s" repeatCount="indefinite"/>
+  </rect>
+</svg>

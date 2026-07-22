@@ -1,0 +1,500 @@
+/* =========================================================================
+   色の役割（この表を破らないこと）
+     --cyan   … 「選択中／現在地」専用。言語・難易度タブ・項目・バリエの選択表示
+     --gold   … 「実行」＝主要アクション専用（▶ 実行 ボタン）
+     --pink   … 「お気に入り（いいね）」と説明パネルの識別
+     --violet … 項目一覧・HTMLの識別色（状態ではなく“そこが何か”を示す）
+     --ok/--err … 実行結果（成功／エラー）
+   ※同じ意味に別の色を当てない。状態(cyan)と識別(violet/pink/gold)を混ぜない。
+   ========================================================================= */
+  :root{
+    --void:#0B0913; --panel:#13101F; --panel2:#181426; --code:#0A0812;
+    --edge:rgba(176,132,255,.26); --edge2:rgba(176,132,255,.12);
+    /* 入力欄・操作部品の枠線は「どこが部品か」を示す情報なので 3:1 が要る（WCAG 1.4.11）。
+       装飾用の --edge2(1.07:1) とは別に、コントラストを満たす枠色を用意する */
+    --edge-input:#6F659B;
+    --gold:#F5C24B; --violet:#B084FF; --cyan:#4FE6E6; --magenta:#F45BD6; --pink:#FF8BD0;
+    --ok:#6CE0C0; --err:#FF6076;
+    --text:#E5E1F4; --dim:#9A94B8; --dim2:#A29CC4;
+    --mono:"Cascadia Code","Consolas",ui-monospace,monospace;
+    --jp:"Yu Gothic","Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;background:var(--void);color:var(--text);font-family:var(--jp);}
+  body{display:flex;flex-direction:column;overflow:hidden;font-size:14px;}
+  ::selection{background:rgba(245,194,74,.3);}
+
+  /* ===== スキップリンク（キーボードで項目一覧を飛ばして本文へ / WCAG 2.4.1） ===== */
+  .skip-link{position:fixed;top:-100px;left:8px;z-index:100;font-family:var(--jp);font-size:13px;font-weight:800;
+    color:var(--void);background:var(--cyan);border-radius:0 0 8px 8px;padding:10px 18px;text-decoration:none;transition:top .15s;}
+  .skip-link:focus{top:0;outline:2px solid #fff;outline-offset:2px;}
+
+  /* ===== スクロールバー（サイト全体でネオンテーマに統一） ===== */
+  *{scrollbar-width:thin;scrollbar-color:rgba(176,132,255,.5) transparent;}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{
+    background:linear-gradient(180deg,rgba(176,132,255,.6),rgba(79,230,230,.5));
+    border-radius:10px;border:2px solid transparent;background-clip:padding-box;}
+  ::-webkit-scrollbar-thumb:hover{
+    background:linear-gradient(180deg,rgba(176,132,255,.9),rgba(79,230,230,.75));
+    background-clip:padding-box;}
+  ::-webkit-scrollbar-corner{background:transparent;}
+
+  /* ===== ヘッダー ===== */
+  .header{display:flex;align-items:center;gap:14px;height:48px;padding:0 16px;border-bottom:1px solid var(--edge);background:rgba(7,6,14,.75);flex:none;}
+  .header .logo{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--gold);text-shadow:0 0 12px rgba(245,194,74,.5);white-space:nowrap;}
+  .header .logo .logo-icon{width:22px;height:22px;flex:none;filter:drop-shadow(0 0 6px rgba(79,230,230,.5));}
+  .header .logo b{color:var(--violet);}
+  .header .tagline{font-size:14px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .header .spacer{margin-left:auto;}
+  .header .clock{font-family:var(--jp);font-size:14px;color:var(--cyan);white-space:nowrap;border-left:1px solid var(--edge2);padding-left:14px;font-variant-numeric:tabular-nums;}
+
+  /* ===== ツールバー ===== */
+  .toolbar{display:flex;align-items:center;gap:12px;height:40px;padding:0 14px;border-bottom:1px solid var(--edge);background:var(--panel);flex:none;}
+  .toolbar .about-link{display:inline-flex;align-items:center;min-height:32px;font-family:var(--jp);font-size:13px;font-weight:700;color:var(--cyan);text-decoration:none;padding:5px 10px;border:1px solid var(--edge-input);border-radius:8px;transition:.15s;}
+  .toolbar .about-link:hover{color:#fff;border-color:var(--cyan);box-shadow:0 0 12px rgba(79,230,230,.3);}
+  /* ハンバーガー（狭い画面のみ表示）／ドロワーの背景
+     色は violet：このボタンが開くのは「項目一覧」であり、violet はその識別色。
+     cyan は「選択中」専用のため使わない（色の役割表） */
+  .menu-toggle{display:none;font-family:var(--jp);font-size:13px;font-weight:800;letter-spacing:.04em;cursor:pointer;min-height:44px;
+    color:var(--void);background:linear-gradient(100deg,var(--violet),var(--pink));border:1px solid var(--violet);border-radius:8px;padding:7px 14px;transition:.15s;
+    box-shadow:0 0 16px rgba(176,132,255,.5);animation:menuPulse 2s ease-in-out infinite;}
+  .menu-toggle:hover{filter:brightness(1.08);box-shadow:0 0 26px rgba(255,139,208,.7);}
+  .menu-toggle:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+  @keyframes menuPulse{0%,100%{box-shadow:0 0 14px rgba(176,132,255,.45);}50%{box-shadow:0 0 24px rgba(255,139,208,.7);}}
+  .menu-backdrop{display:none;position:fixed;inset:0;background:rgba(5,4,12,.62);z-index:55;backdrop-filter:blur(1px);}
+  /* ヘッダー右のサイト説明リンク（タブレット時のみ表示） */
+  .header .about-link.header-about{display:none;align-items:center;min-height:44px;font-family:var(--jp);font-size:12px;font-weight:700;color:var(--cyan);text-decoration:none;border:1px solid var(--edge-input);border-radius:8px;padding:5px 10px;white-space:nowrap;}
+  .header .about-link.header-about:hover{color:#fff;border-color:var(--cyan);box-shadow:0 0 12px rgba(79,230,230,.3);}
+  /* 言語トグル（日本語 / English） */
+  .lang-toggle{font-family:var(--mono);font-size:12px;font-weight:800;letter-spacing:.05em;cursor:pointer;color:var(--cyan);min-height:32px;
+    background:linear-gradient(180deg,rgba(79,230,230,.12),rgba(79,230,230,.03));border:1px solid var(--edge-input);border-radius:8px;padding:5px 11px;transition:.15s;white-space:nowrap;}
+  .lang-toggle:hover{color:#fff;border-color:var(--cyan);box-shadow:0 0 12px rgba(79,230,230,.3);}
+  .lang-toggle:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+  .toolbar .right{margin-left:auto;display:flex;align-items:center;gap:9px;}
+  /* チェックボックス本体は13pxしかないが、押せる範囲はラベル全体。
+     ラベル側で高さを確保して、実際のタップ対象が 24px を下回らないようにする（WCAG 2.5.8） */
+  label.auto{font-family:var(--jp);font-size:12px;color:var(--dim);display:flex;align-items:center;gap:7px;cursor:pointer;min-height:32px;padding:0 4px;}
+  label.auto input{width:17px;height:17px;flex:none;accent-color:var(--cyan);cursor:pointer;}
+  .btn{font-family:var(--jp);font-size:12px;font-weight:800;letter-spacing:.05em;cursor:pointer;border:none;padding:8px 16px;min-width:128px;text-align:center;position:relative;
+      clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:transform .12s,box-shadow .25s,filter .2s;}
+  .btn:active{transform:translateY(1px) scale(.985);}
+  .btn.primary{color:var(--void);background:linear-gradient(100deg,#FFE39B,var(--gold) 52%,#F0A93C);
+      box-shadow:0 0 0 1px rgba(245,194,74,.75),0 0 16px rgba(245,194,74,.45),inset 0 1px 0 rgba(255,255,255,.55);text-shadow:0 1px 0 rgba(255,240,200,.55);}
+  .btn.primary:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 0 0 1px rgba(245,194,74,.95),0 0 28px rgba(245,194,74,.75),inset 0 1px 0 rgba(255,255,255,.6);}
+  .btn.ghost{color:var(--cyan);background:linear-gradient(180deg,rgba(79,230,230,.10),rgba(79,230,230,.03));
+      box-shadow:0 0 0 1px var(--edge2),inset 0 0 12px rgba(79,230,230,.05);}
+  .btn.ghost:hover{color:#fff;transform:translateY(-1px);box-shadow:0 0 0 1px var(--cyan),0 0 20px rgba(79,230,230,.5),inset 0 0 16px rgba(79,230,230,.12);}
+  /* 操作ボタンの再配置先（PCでは非表示。タブレット以下でバリエ/プレビューの下に出す） */
+  .row-controls{display:none;}
+
+  /* ===== メイングリッド ===== */
+  /* 左に「動きを選ぶ」(全高)、右は 上段=バリエ/説明/プレビュー・下段=ログ/JS/HTML/CSS の2段 */
+  .main{flex:1;display:grid;grid-template-columns:196px minmax(0,1fr);min-height:0;min-width:0;}
+  /* 上段52%：1440×900のノートPCで、最初に開く項目の説明＋用語が収まる高さ。
+     42%だと縦900pxで用語欄が44px隠れ、このサイトの要である用語解説が初見で見えなかった。
+     項目により本文量は違うので、収まらない時は下端フェード（.p-desc::after）で続きを示す */
+  .stack{display:grid;grid-template-rows:minmax(150px,52%) minmax(0,1fr) auto;min-height:0;min-width:0;}
+  .row{display:grid;min-height:0;min-width:0;}
+  /* 上段: 説明(2fr) | バリエ(=ログと同じ180px) | プレビュー(1fr)。プレビュー左端は下段のCSS列と一致 */
+  .row-top{grid-template-columns:minmax(0,2fr) 180px minmax(0,1fr);border-bottom:1px solid var(--edge);}
+  .row-bottom{grid-template-columns:180px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);}
+  /* HTML/CSSモードではログ窓・JS窓は不要なので隠し、HTML|CSSの2カラムに広げる */
+  body[data-kind="html"] .p-log, body[data-kind="css"] .p-log,
+  body[data-kind="html"] .p-js,  body[data-kind="css"] .p-js{display:none;}
+  body[data-kind="html"] .row-bottom, body[data-kind="css"] .row-bottom{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+  /* ただしエラーが起きた時だけはログ窓を出す。
+     隠したままだと、記法ミスの原因表示（このサイトの売り）が永久に届かない */
+  body[data-kind="html"].has-error .p-log, body[data-kind="css"].has-error .p-log{display:flex;}
+  body[data-kind="html"].has-error .row-bottom, body[data-kind="css"].has-error .row-bottom{grid-template-columns:180px minmax(0,1fr) minmax(0,1fr);}
+  /* 列の区切り線（各段の最終列以外に右ボーダー） */
+  .p-vars,.p-desc,.p-log,.p-js,.p-html{border-right:1px solid var(--edge);}
+  .pane{min-width:0;min-height:0;display:flex;flex-direction:column;}
+  .phead{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;font-family:var(--jp);font-size:13.5px;font-weight:700;letter-spacing:.02em;border-bottom:1px solid var(--edge2);flex:none;}
+  .phead .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+  /* 見出しの実体（h2）。パネル見出しは見た目そのままに、支援技術には見出しとして渡す */
+  .phead-title{flex:1;min-width:0;align-self:stretch;display:flex;align-items:center;gap:8px;
+    margin:0;font:inherit;color:inherit;letter-spacing:inherit;}
+  /* パネル見出しの開閉ボタン（PCでは通常の見出しに見せる）。
+     align-self:stretch が無いと文字高(21px)しか当たり判定が無く、40pxの見出しバーの上下が死角になる */
+  .pane-toggle{flex:1;min-width:0;align-self:stretch;display:flex;align-items:center;gap:8px;background:none;border:none;padding:0;margin:0;font:inherit;color:inherit;letter-spacing:inherit;text-align:left;cursor:default;}
+  .pane-toggle:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px;}
+  /* サイドバーの軸ラベル（言語 / 難易度）。同型ボタンが11個並ぶのを2群に分ける */
+  .group-label{margin:10px 8px 0;font-family:var(--jp);font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--dim);}
+  /* コード窓のキー操作案内 */
+  .ed-help{margin:0;padding:7px 12px;font-size:11.5px;color:var(--dim);background:var(--panel);border-top:1px solid var(--edge2);}
+  .copybtn{margin-left:8px;display:inline-flex;align-items:center;min-height:32px;font-family:var(--jp);font-size:12px;font-weight:700;color:var(--dim);background:var(--panel);border:1px solid var(--edge-input);border-radius:6px;padding:5px 10px;cursor:pointer;transition:.14s;white-space:nowrap;flex:none;}
+  .copybtn:hover{color:#fff;border-color:var(--cyan);box-shadow:0 0 10px rgba(79,230,230,.25);}
+  .copybtn.done{color:var(--void);background:linear-gradient(90deg,var(--cyan),#8ff);border-color:var(--cyan);}
+  .copybtn:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+  /* 共有ボタン（説明パネル見出しの右） */
+  .sharebtn{margin-left:auto;display:inline-flex;align-items:center;min-height:32px;font-family:var(--jp);font-size:12px;font-weight:700;color:var(--pink);background:var(--panel);border:1px solid var(--edge-input);border-radius:6px;padding:5px 10px;cursor:pointer;transition:.14s;white-space:nowrap;flex:none;}
+  .sharebtn:hover{color:#fff;border-color:var(--pink);box-shadow:0 0 10px rgba(255,139,208,.3);}
+  .sharebtn.done{color:var(--void);background:linear-gradient(90deg,var(--pink),#ffc0e2);border-color:var(--pink);}
+  .sharebtn:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+
+  /* 動きを選ぶ */
+  .p-effects{border-right:1px solid var(--edge);}
+  .p-effects .phead{color:var(--violet);}
+  /* ドロワー最上部の「このサイトについて」：スマホのみ表示（PC/タブレットはヘッダーのリンクを使う） */
+  .drawer-about{display:none;}
+  .langs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px 8px 0;flex:none;}
+  .lang{font-family:var(--mono);font-size:12.5px;font-weight:700;cursor:pointer;color:var(--dim);background:var(--panel);border:1px solid var(--edge-input);padding:8px 4px;transition:.15s;
+      clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);}
+  .lang:hover{color:#fff;border-color:var(--cyan);}
+  /* 選択中＝cyan（色の役割表を参照。状態を示す色はcyanのみ） */
+  .lang.on{color:var(--void);background:linear-gradient(90deg,var(--cyan),#8ff);border-color:var(--cyan);box-shadow:0 0 12px rgba(79,230,230,.3);}
+  /* 検索窓 */
+  .search-wrap{position:relative;padding:8px 8px 0;flex:none;}
+  .search{width:100%;box-sizing:border-box;font-family:var(--jp);font-size:12.5px;color:var(--text);background:#0a0812;border:1px solid var(--edge-input);border-radius:8px;padding:9px 30px 9px 11px;transition:.15s;}
+  .search::placeholder{color:var(--dim2);}
+  .search:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(79,230,230,.18);}
+  .search::-webkit-search-cancel-button{display:none;}
+  /* [hidden] は UA の display:none と同じ詳細度のため、作者側の display:flex が黙って勝つ。
+     明示的に打ち消さないと「消すものが無いのに✕が居座り、Tabでも止まる」 */
+  .search-clear{position:absolute;top:8px;right:9px;width:26px;height:calc(100% - 8px);display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--dim2);font-size:12px;cursor:pointer;padding:0;border-radius:6px;}
+  .search-clear[hidden]{display:none;}
+  .search-clear:hover{color:var(--pink);}
+  .search-clear:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px;}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px 8px 8px;border-bottom:1px solid var(--edge2);flex:none;}
+  .tab{font-family:var(--jp);font-size:12px;font-weight:700;cursor:pointer;color:var(--dim);background:var(--panel);border:1px solid var(--edge-input);padding:6px 8px;transition:.15s;}
+  .tab:hover{color:#fff;border-color:var(--cyan);}
+  .tab.on{color:var(--void);background:linear-gradient(90deg,var(--cyan),#8ff);border-color:var(--cyan);}
+  .fx-list{flex:1;overflow-y:auto;padding:9px;display:grid;gap:6px;align-content:start;}
+  .fx-item{position:relative;}
+  .fx{display:block;width:100%;text-align:left;font-family:var(--jp);font-size:13.5px;color:var(--text);background:var(--panel);border:1px solid var(--edge2);padding:10px 46px 10px 11px;cursor:pointer;transition:.13s;
+      clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);}
+  .fx small{display:block;color:var(--dim2);font-size:12px;margin-top:3px;}
+  .fx:hover{border-color:var(--cyan);background:var(--panel2);transform:translateX(2px);}
+  .fx.on{border-color:var(--cyan);color:#fff;box-shadow:0 0 12px rgba(79,230,230,.25);background:var(--panel2);}
+  /* いいねハート＝独立したbutton（キーボード操作可・タップ領域確保） */
+  .fx-item .like{position:absolute;top:2px;right:2px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+      font-style:normal;font-size:16px;font-weight:900;line-height:1;color:var(--dim2);background:none;border:none;border-radius:8px;cursor:pointer;transition:.12s;user-select:none;-webkit-text-stroke:.7px currentColor;}
+  .fx-item .like:hover{color:var(--pink);}
+  .fx-item .like.on{color:var(--pink);text-shadow:0 0 8px rgba(255,139,208,.65);}
+  .fx-item .like:focus-visible{outline:2px solid var(--cyan);outline-offset:1px;}
+  .fx-item .lang-badge{position:absolute;top:8px;right:8px;font-style:normal;font-size:10px;font-weight:800;line-height:1;padding:3px 7px;border-radius:6px;letter-spacing:.04em;color:var(--void);pointer-events:none;}
+  .fx-item .lang-badge.k-html{background:var(--violet);}
+  .fx-item .lang-badge.k-css{background:var(--cyan);}
+  .fx-item .lang-badge.k-js{background:var(--gold);}
+  .fx-item .lang-badge.k-jq{background:var(--pink);}
+  /* いいねタブ：識別はpink（♥）だが、選択状態は他タブと同じcyanで示す（役割表の一貫性） */
+  .tab.like-tab{grid-column:1 / -1;color:var(--pink);border-color:var(--edge-input);}
+  .tab.like-tab:hover{border-color:var(--cyan);color:#fff;}
+  .tab.like-tab.on{color:var(--void);background:linear-gradient(90deg,var(--cyan),#8ff);border-color:var(--cyan);}
+  /* 空状態（いいね0件・検索0件）。世界観を保ったまま「次にどうするか」を示す */
+  .empty-state{padding:22px 14px;text-align:center;}
+  .empty-state .em-icon{font-size:30px;line-height:1;display:block;margin-bottom:10px;filter:drop-shadow(0 0 10px rgba(176,132,255,.5));}
+  .empty-state .em-title{font-size:13.5px;font-weight:800;color:var(--text);margin:0 0 6px;}
+  .empty-state .em-body{color:var(--dim);font-size:12px;line-height:1.75;margin:0;}
+  .empty-state .em-body b{color:var(--pink);}
+  .empty-state .em-cta{margin-top:12px;font-family:var(--jp);font-size:12px;font-weight:800;cursor:pointer;color:var(--void);
+    background:linear-gradient(90deg,var(--cyan),#8ff);border:1px solid var(--cyan);border-radius:8px;padding:9px 16px;min-height:44px;}
+  .empty-state .em-cta:hover{filter:brightness(1.08);box-shadow:0 0 14px rgba(79,230,230,.45);}
+  .empty-state .em-cta:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+
+  /* バリエーション（識別=金／選択=cyan） */
+  .p-vars{border-right:1px solid var(--edge);background:linear-gradient(180deg,rgba(245,194,74,.05),transparent);}
+  .p-vars .phead{color:var(--gold);}
+  .var-list{flex:1;overflow-y:auto;padding:9px;display:grid;gap:7px;align-content:start;}
+  .var{text-align:center;font-family:var(--jp);font-size:12.5px;font-weight:700;color:var(--gold);background:rgba(245,194,74,.06);border:1px solid rgba(245,194,74,.45);padding:11px 8px;min-height:54px;display:flex;align-items:center;justify-content:center;line-height:1.35;cursor:pointer;transition:.13s;
+      clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);}
+  .var:hover{background:rgba(245,194,74,.16);box-shadow:0 0 12px rgba(245,194,74,.3);}
+  .var.on{color:var(--void);background:linear-gradient(90deg,var(--cyan),#8ff);border-color:var(--cyan);}
+  /* ヒントはボタンの直上（近接の原則）。以前はリスト下端に置かれ、PCで約140px離れていた */
+  .var-hint{padding:9px 10px 0;font-size:12px;color:var(--dim2);line-height:1.6;flex:none;}
+
+  /* 説明（ピンク） */
+  .p-desc{overflow-y:auto;background:linear-gradient(180deg,rgba(244,91,214,.06),transparent);}
+  .p-desc .phead{color:var(--pink);position:sticky;top:0;z-index:2;background:var(--void);}
+  .desc-body{padding:11px 13px;}
+  /* 下端フェード＝「まだ下に続く」の合図。項目により本文量が違い必ず収まるとは限らないため、
+     スクロールできること自体を見せる（sticky なので中身が短い時は下端に張り付くだけで無害） */
+  .p-desc::after{content:"";position:sticky;bottom:0;left:0;flex:none;display:block;height:26px;margin-top:-26px;
+    background:linear-gradient(180deg,rgba(11,9,19,0),var(--void));pointer-events:none;}
+  .desc-title{font-size:26px;font-weight:800;line-height:1.3;color:#fff;margin:0 0 12px;text-shadow:0 0 10px rgba(255,139,208,.35);}
+  .desc-lead{font-size:15px;line-height:1.9;letter-spacing:.01em;color:var(--text);margin:0 0 14px;}
+  .desc-lead b{color:var(--pink);font-weight:700;}
+  .tags-line{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 13px;}
+  .tags-line .t{font-family:var(--mono);font-size:12px;color:var(--cyan);border:1px solid rgba(79,230,230,.35);background:rgba(79,230,230,.06);padding:2px 7px;}
+  .prep-title{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--pink);margin:0 0 8px;}
+  .prep{display:grid;gap:9px;}
+  .prep .row{display:flex;flex-direction:column;gap:4px;border-left:2px solid var(--edge);padding-left:8px;}
+  .prep .sym{align-self:flex-start;max-width:100%;font-family:var(--mono);font-size:12px;color:var(--gold);background:var(--code);border:1px solid var(--edge2);padding:2px 7px;white-space:normal;overflow-wrap:anywhere;line-height:1.5;}
+  .prep .d{font-size:13.5px;color:#C9C4E0;line-height:1.7;}
+  .prep .d b{color:var(--violet);}
+
+  .p-js .phead{color:var(--gold);}
+  .p-preview{min-height:0;min-width:0;display:flex;flex-direction:column;background:var(--panel2);}
+  .p-preview .phead{color:var(--ok);}
+  .p-preview .phead .live{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:blink 1.5s step-end infinite;}
+  @keyframes blink{50%{opacity:.3}}
+  .frame-pad{flex:1;min-height:0;padding:12px;background:linear-gradient(180deg,var(--panel2),#0E0B18);background-image:radial-gradient(rgba(176,132,255,.06) 1px,transparent 1px);background-size:18px 18px;}
+  iframe{width:100%;height:100%;border:1px solid var(--edge);border-radius:6px;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.4);}
+
+  /* JS / HTML / CSS / ログ（下段パネル） */
+  .p-html,.p-css,.p-log{min-height:0;min-width:0;display:flex;flex-direction:column;}
+  .p-html .phead{color:var(--violet);}
+  .p-css .phead{color:var(--cyan);}
+  .p-log .phead{color:var(--ok);}
+  .p-html .dot{background:var(--violet);box-shadow:0 0 8px var(--violet);}
+  .p-css .dot{background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+  .p-log .dot{background:var(--ok);box-shadow:0 0 8px var(--ok);}
+  .p-js .dot{background:var(--gold);box-shadow:0 0 8px var(--gold);}
+
+  /* VSCode風ハイライト：色付き<pre>の上に透明textareaを重ねる */
+  .editor{position:relative;flex:1;min-height:0;min-width:0;overflow:hidden;background:var(--code);}
+  .p-js .editor{background:#0C0916;}
+  .editor>pre.hl,.editor>textarea{
+    margin:0;position:absolute;top:0;left:0;right:0;bottom:0;
+    font-family:var(--mono);font-size:13px;line-height:1.6;letter-spacing:0;
+    padding:11px 12px;border:0;box-sizing:border-box;tab-size:2;white-space:pre-wrap;overflow-wrap:break-word;}
+  .p-js .editor>pre.hl,.p-js .editor>textarea{font-size:13px;}
+  /* textareaはスクロールバー分の溝を常に確保し、pre側も同じ幅を右に足す。
+     これをしないと折り返し幅がズレてキャレット位置がずれる */
+  .editor>pre.hl{z-index:0;color:#D4D4D4;overflow:hidden;pointer-events:none;padding-right:22px;}
+  /* codeタグはブラウザ標準の等幅フォントが勝手に当たり、textareaと文字幅がずれて
+     キャレット位置が狂う。全指標をpre/textareaと完全一致させる */
+  .editor>pre.hl code{font-family:inherit;font-size:inherit;line-height:inherit;letter-spacing:inherit;white-space:inherit;overflow-wrap:inherit;font-style:normal;}
+  .editor>textarea{z-index:1;color:transparent;background:transparent;caret-color:#E6E6E6;resize:none;outline:none;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;}
+  /* 同じ見た目の窓が3つ並ぶため、キャレットだけでは「今どの窓にいるか」が分からない */
+  .editor>textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px;}
+  .editor>textarea::selection{background:rgba(120,150,255,.35);}
+  /* トークン色（VSCode Dark+） */
+  /* 斜体は文字幅が変わり折り返し位置がずれるため使わない */
+  .tok-com{color:#6A9955;}
+  .tok-str{color:#CE9178;}
+  .tok-key{color:#569CD6;}
+  .tok-num{color:#B5CEA8;}
+  .tok-fn{color:#DCDCAA;}
+  .tok-prop{color:#9CDCFE;}
+  .tok-tag{color:#569CD6;}
+  .tok-attr{color:#9CDCFE;}
+  .tok-sel{color:#D7BA7D;}
+  .tok-punc{color:#808080;}
+
+  .p-log{background:var(--void);}
+  .log{flex:1;overflow-y:auto;padding:9px 12px;font-family:var(--mono);font-size:12px;}
+  .log .cl{display:flex;gap:8px;padding:2px 0;line-height:1.5;}
+  .log .cl .t{color:var(--dim2);flex:none;}
+  .log .log-ok .m{color:var(--ok);}
+  .log .log-info .m{color:var(--violet);}
+  .log .log-err .m{color:var(--err);}
+  .log .log-err .hint{color:#ffd0d6;display:block;margin-top:2px;}
+  .log .idle{color:var(--dim2);}
+
+  /* ===== 最下部フッター（著作権／版・更新・製作者） ===== */
+  .ticker{min-height:30px;flex:none;display:flex;align-items:center;gap:12px;padding:0 16px;overflow:hidden;white-space:nowrap;
+      border-top:1px solid var(--edge);background:linear-gradient(90deg,rgba(176,132,255,.10),rgba(245,194,74,.07),rgba(79,230,230,.08));}
+  .ticker .foot-copy{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.03em;text-shadow:0 0 8px rgba(245,194,74,.35);}
+  .ticker .foot-nav{display:flex;align-items:center;gap:12px;}
+  /* ナビ内の独立リンクは 2.5.8 の「インライン」例外が効かないため 24px を確保する */
+  .ticker .foot-nav a{display:inline-flex;align-items:center;min-height:24px;padding:0 3px;font-family:var(--jp);font-size:12px;color:var(--dim);text-decoration:none;border-bottom:1px solid transparent;}
+  .ticker .foot-nav a:hover{color:var(--cyan);border-bottom-color:var(--cyan);}
+  .ticker .foot-nav a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+  .ticker .foot-right{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:0;font-size:12px;color:var(--dim);overflow:hidden;}
+  .ticker .foot-ver{font-family:var(--mono);color:var(--cyan);letter-spacing:.02em;text-shadow:0 0 8px rgba(79,230,230,.4);}
+  .ticker .foot-sep{color:var(--edge2);}
+  .ticker .foot-upd{font-family:var(--jp);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;}
+  .ticker .foot-upd b{color:var(--dim);font-weight:700;}
+  .ticker .foot-author{font-family:var(--jp);}
+  .ticker .foot-author b{color:var(--gold);font-weight:700;}
+
+  /* ===== ネオン装飾（走査線なし・グローのみ） ===== */
+  /* ヘッダー下端のネオンライン */
+  .header{box-shadow:0 1px 16px -4px rgba(79,230,230,.3);}
+  /* パネル見出しをネオン発光 */
+  .phead{text-shadow:0 0 8px currentColor;}
+  /* 選択中の言語・タブ・項目・バリエのグロー増強（すべて cyan＝選択の色） */
+  .lang.on{box-shadow:0 0 16px rgba(79,230,230,.55);}
+  .tab.on{box-shadow:0 0 15px rgba(79,230,230,.5);}
+  .fx.on{box-shadow:0 0 16px rgba(79,230,230,.3);}
+  .var.on{box-shadow:0 0 15px rgba(79,230,230,.5);}
+  /* 「自動実行」が既定ONのため、実行ボタンは普段は押す必要がない。
+     以前は常時脈動して画面最大の視覚重量を持ち、同じく脈動するメニューと主役を奪い合っていた。
+     脈動は「自動実行OFF＝押さないと反映されない時」だけに限定する（JSが body に .manual-run を付ける） */
+  body.manual-run .btn.primary{animation:btnPulse 2.4s ease-in-out infinite;}
+  body.manual-run .btn.primary:hover{animation:none;}
+  @keyframes btnPulse{
+    0%,100%{box-shadow:0 0 0 1px rgba(245,194,74,.7),0 0 14px rgba(245,194,74,.4),inset 0 1px 0 rgba(255,255,255,.55);}
+    50%{box-shadow:0 0 0 1px rgba(245,194,74,.95),0 0 26px rgba(245,194,74,.7),inset 0 1px 0 rgba(255,255,255,.6);}
+  }
+  /* プレビュー枠のネオン外周 */
+  iframe{box-shadow:0 0 30px -8px rgba(79,230,230,.4),0 10px 40px rgba(0,0,0,.4);}
+
+  /* ===== キーボード操作: フォーカスの可視化（clip-path要素はoutlineが欠けるためbox-shadow併用・WCAG 2.4.7） ===== */
+  .btn:focus-visible,.lang:focus-visible,.tab:focus-visible,
+  .fx:focus-visible,.var:focus-visible,.auto input:focus-visible{
+    outline:2px solid var(--cyan);outline-offset:2px;
+    box-shadow:0 0 0 4px rgba(79,230,230,.4);}
+
+  /* ============================================================
+     レスポンシブ：小型デスクトップ／タブレット(iPad)／スマホ
+     PCは多ペイン固定。狭い画面では縦積み＋ページスクロールへ切替。
+     ============================================================ */
+
+  /* --- 小型デスクトップ：左カラムだけ圧縮（多ペイン維持） --- */
+  @media (min-width:1025px) and (max-width:1180px){
+    .main{grid-template-columns:172px minmax(0,1fr);}
+    .row-top{grid-template-columns:minmax(0,2fr) 172px minmax(0,1fr);}
+    .row-bottom{grid-template-columns:172px minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);}
+    .tab{font-size:11.5px;padding:6px 4px;}
+  }
+
+  /* --- タブレット（〜1024px）：全ペインを縦積み＋ページスクロール --- */
+  @media (max-width:1024px){
+    /* 画面固定をやめ、通常フロー＝ページ全体がスクロール。フッターは常に最下部 */
+    html,body{height:auto;min-height:100%;}
+    body{display:block;overflow:visible;}
+    .main{display:block;flex:none;}
+    .stack{display:block;}
+    .row-bottom{display:block;}
+    .row-top,.row-bottom{border-bottom:none;}
+    .pane{height:auto;}
+    /* ハンバーガー表示 */
+    .menu-toggle{display:inline-flex;align-items:center;justify-content:center;}
+    /* 「項目メニュー」は左からスライドインするドロワー（通常は隠す）。
+       transform だけで隠すと要素は生きたままで、閉じていてもTabで画面外へフォーカスが飛ぶ。
+       visibility:hidden で操作対象から外し、閉じるアニメーション終了後(.25s)に効かせる */
+    .p-effects{position:fixed;top:0;left:0;bottom:0;width:min(86vw,300px);z-index:60;
+      transform:translateX(-100%);visibility:hidden;transition:transform .25s ease, visibility 0s linear .25s;
+      background:var(--panel);border-right:1px solid var(--edge);box-shadow:0 0 46px rgba(0,0,0,.6);}
+    body.menu-open .p-effects{transform:translateX(0);visibility:visible;transition:transform .25s ease, visibility 0s;}
+    body.menu-open .menu-backdrop{display:block;}
+    .p-effects .fx-list{max-height:none;}   /* ドロワーは全高なので内部で伸ばす */
+    /* 枠線を縦積み用に付け替え（右罫線→下罫線） */
+    .p-vars,.p-desc,.p-log,.p-js,.p-html,.p-css,.p-preview{
+      border-right:none;border-bottom:1px solid var(--edge);}
+    /* 上段：説明 → バリエーション → プレビュー を全幅で縦に積む。
+       以前は バリエ(1/3)｜プレビュー(2/3) の2カラムで、プレビュー(52vh)に引き伸ばされた
+       バリエ欄にタブレットで461pxの死んだ余白ができ、見出しもスマホで2行に折れていた */
+    .row-top{display:block;}
+    .p-desc{overflow:visible;}
+    .p-desc::after{display:none;}      /* 縦積み時はページごとスクロールするためフェード不要 */
+    /* パネル内スクロールが無くなるため見出しの追従も不要。
+       残すとページスクロール時にヘッダーへ貼り付いてくる */
+    .p-desc .phead{position:static;}
+    .p-vars{border-right:none;border-bottom:1px solid var(--edge);}
+    /* バリエーションは横並びのチップに。数が少なくても余白が死なない */
+    .p-vars .var-list{flex:none;display:flex;flex-wrap:wrap;gap:8px;overflow:visible;padding:9px 10px 12px;}
+    .p-vars .var{flex:1 1 auto;min-width:132px;}
+    .p-preview{border-bottom:none;}
+    .frame-pad{flex:none;height:52vh;min-height:300px;}
+    /* flex:1 だと flex-basis:0% で高さが潰れコードが見えなくなるため flex:none で固定 */
+    .editor{flex:none;height:230px;}
+    /* タップしやすく（推奨44px）＋中身が枠からはみ出さないよう中央寄せ */
+    .lang,.tab,.var{min-height:44px;display:flex;align-items:center;justify-content:center;padding:9px 10px;line-height:1.25;text-align:center;}
+    .fx{min-height:48px;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:10px 50px 10px 12px;}
+    .fx>span{white-space:normal;word-break:break-word;}
+    .fx small{margin-top:0;}
+    .fx-item .like{width:44px;height:44px;}
+    /* --- ヘッダーに集約：タイトル｜このサイトについて｜メニュー（上部に固定） --- */
+    .header{position:sticky;top:0;z-index:50;height:auto;flex-wrap:wrap;gap:6px 10px;padding:12px 16px;}
+    .header .logo{font-size:17px;}
+    .header .tagline{display:none;}
+    .header .clock{display:none;}
+    .header .spacer{display:none;}
+    .header .about-link.header-about{display:inline-flex;align-items:center;margin-left:auto;font-size:12.5px;}
+    /* ツールバーのバーは廃止（中身はヘッダーと下段の操作バーへ移動済み） */
+    .toolbar{display:none;}
+    /* 自動実行/リセット/実行：バリエ・プレビューの下に横並びで表示 */
+    .row-controls{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px;
+      padding:12px 16px;border-bottom:1px solid var(--edge);background:var(--panel);}
+    .row-controls .right{margin-left:0;}
+    .row-controls label.auto{font-size:12px;min-height:44px;}
+    /* --- フッター：中央寄せ3段スタックでおしゃれに（常に最下部） --- */
+    .ticker{min-height:auto;flex-direction:column;flex-wrap:wrap;align-items:center;justify-content:center;text-align:center;gap:11px;padding:22px 16px 26px;
+      background:linear-gradient(180deg,rgba(176,132,255,.09),rgba(79,230,230,.05),transparent);}
+    .ticker .foot-nav{order:1;gap:14px;}
+    .ticker .foot-nav a{font-size:13.5px;border-bottom-color:var(--edge2);display:inline-flex;align-items:center;min-height:44px;padding:0 6px;}
+    .header .about-link.header-about{min-height:40px;}
+    .ticker .foot-copy{order:2;font-size:14px;}
+    .ticker .foot-right{order:3;margin-left:0;flex-wrap:wrap;justify-content:center;gap:6px 10px;font-size:12.5px;}
+    /* --- 下段パネル：見出しタップで開閉するアコーディオン（既定は開いた状態） --- */
+    .p-log .pane-toggle,.p-js .pane-toggle,.p-html .pane-toggle,.p-css .pane-toggle{cursor:pointer;user-select:none;}
+    .p-log .phead .dot,.p-js .phead .dot,.p-html .phead .dot,.p-css .phead .dot{display:none;}
+    .p-log .pane-toggle::before{content:"📋";margin-right:3px;}
+    .p-js .pane-toggle::before{content:"⚡";margin-right:3px;}
+    .p-html .pane-toggle::before{content:"📄";margin-right:3px;}
+    .p-css .pane-toggle::before{content:"🎨";margin-right:3px;}
+    .p-log .pane-toggle::after,.p-js .pane-toggle::after,.p-html .pane-toggle::after,.p-css .pane-toggle::after{
+      content:"▾ 閉じる";margin-left:auto;font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.02em;}
+    .p-log.collapsed .pane-toggle::after,.p-js.collapsed .pane-toggle::after,.p-html.collapsed .pane-toggle::after,.p-css.collapsed .pane-toggle::after{content:"▸ 開く";color:var(--cyan);}
+    :root[data-lang="en"] .p-log .pane-toggle::after,:root[data-lang="en"] .p-js .pane-toggle::after,:root[data-lang="en"] .p-html .pane-toggle::after,:root[data-lang="en"] .p-css .pane-toggle::after{content:"▾ Close";}
+    :root[data-lang="en"] .p-log.collapsed .pane-toggle::after,:root[data-lang="en"] .p-js.collapsed .pane-toggle::after,:root[data-lang="en"] .p-html.collapsed .pane-toggle::after,:root[data-lang="en"] .p-css.collapsed .pane-toggle::after{content:"▸ Open";}
+    .p-js.collapsed .copybtn,.p-html.collapsed .copybtn,.p-css.collapsed .copybtn{display:none;}
+    /* 既定は表示（開いた状態）。collapsed が付くと本文を隠す */
+    .p-log.collapsed .log,.p-js.collapsed .editor,.p-html.collapsed .editor,.p-css.collapsed .editor{display:none;}
+  }
+
+  /* --- スマホ（〜640px）：ヘッダーはロゴのみ・自動実行/時計/タグラインを省略 --- */
+  @media (max-width:640px){
+    body{font-size:13.5px;}
+    /* ヘッダー：ロゴだけに絞ってすっきり（タグライン・時計は非表示） */
+    .header{height:auto;padding:11px 14px;}
+    .header .logo{font-size:16px;}
+    .header .spacer{display:none;}
+    .header .tagline{display:none;}
+    .header .clock{display:none;}
+    /* スマホではヘッダーをロゴ＋メニューのみに。「このサイトについて」はメニュー（ドロワー）最上部へ */
+    .header .about-link.header-about{display:none;}
+    .menu-toggle{margin-left:auto;}
+    /* 「このサイトについて」はドロワー最下部へ。以前は最上部にあり、
+       項目を探しに来た人の視界で最も大きく明るい要素になっていた（メニューの目的と優先順位が逆） */
+    .p-effects .drawer-about{display:flex;align-items:center;justify-content:center;order:99;margin-top:auto;
+      font-family:var(--jp);font-size:12.5px;font-weight:700;color:var(--cyan);text-decoration:none;text-align:center;
+      margin:auto 8px 10px;padding:10px;border:1px solid var(--edge-input);border-radius:8px;background:transparent;min-height:44px;flex:none;}
+    .p-effects .drawer-about:active{filter:brightness(1.12);}
+    /* 操作バー（バリエ/プレビューの下）：ボタンは小さめでもタップ44px確保 */
+    .row-controls{padding:11px 14px;gap:8px;}
+    .row-controls .btn{flex:0 0 auto;min-width:0;min-height:44px;padding:9px 16px;font-size:12.5px;}
+    .row-controls .auto{font-size:12px;}
+    .langs{grid-template-columns:1fr 1fr;}
+    .frame-pad{flex:none;height:64vw;min-height:260px;}
+    .editor{flex:none;height:200px;}
+    .lang,.tab,.fx,.var{min-height:46px;}
+    /* サイト自身が「タップは44px」と決めている以上、例外を作らない */
+    .copybtn,.sharebtn,.lang-toggle,.search-clear{min-height:44px;}
+    .search-clear{width:34px;}
+    .search{padding-right:38px;}
+    /* フッターは上のタブレット用スタック表示をそのまま利用 */
+  }
+
+  /* ===== 英語表示：日本語向けの行間だと字面が低く間延びするため詰める（B-4） ===== */
+  :root[data-lang="en"] .desc-lead{line-height:1.65;}
+  :root[data-lang="en"] .prep .d{line-height:1.55;}
+  :root[data-lang="en"] .like-empty{line-height:1.6;}
+  :root[data-lang="en"] .var-hint{line-height:1.5;}
+
+  /* ============================================================
+     強制カラーモード（Windowsハイコントラスト等 / WCAG 1.4.1・1.3.1）
+     このサイトの「選択中」表示は gradient と box-shadow に全依存しているが、
+     強制カラーでは background-image も box-shadow も強制的に無効化される。
+     その結果 .lang.on と .lang が見分けられなくなる（＝現在地が消える）。
+     色を奪われても意味が残るよう、outline と ✓ で選択を示す。
+     ロゴが「白黒でも成立するか」を問うのと同じ思想。
+     ============================================================ */
+  @media (forced-colors: active){
+    .lang.on,.tab.on,.var.on,.fx.on{
+      outline:3px solid Highlight;outline-offset:-3px;forced-color-adjust:none;
+      background:Highlight;color:HighlightText;}
+    .lang.on::before,.tab.on::before,.var.on::before{content:"✓ ";font-weight:900;}
+    .fx.on::after{content:"◀ 選択中";position:absolute;right:48px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:800;}
+    :root[data-lang="en"] .fx.on::after{content:"◀ current";}
+    /* いいね：色が失われるため文字で状態を示す */
+    .fx-item .like.on::after{content:"✓";font-size:9px;position:absolute;right:2px;bottom:2px;}
+    /* 枠線が消えるパネル境界を明示 */
+    .pane,.phead,.editor{border-color:CanvasText;}
+    .skip-link{border:2px solid CanvasText;}
+  }
+
+  /* ===== 動きを減らす設定（前庭障害・光過敏への配慮 / WCAG 2.3.3） ===== */
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:0.001ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.001ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
