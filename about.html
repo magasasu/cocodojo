@@ -137,8 +137,8 @@
       <ul>
         <li data-i18n-html="privacy_li1"><b>お気に入り（いいね）</b>：お使いのブラウザ内の <code>localStorage</code> にのみ保存され、<b>外部サーバーには送信されません</b>。ブラウザのデータを消すと消去されます。</li>
         <li data-i18n-html="privacy_li2"><b>個人情報の収集</b>：会員登録・ログイン機能はなく、氏名やメールアドレス等を当サイトが直接収集・保存することはありません。</li>
-        <li data-i18n-html="privacy_li3"><b>お問い合わせ</b>：お問い合わせフォームは <b>Formspree</b>（外部のフォーム送信サービス）を利用しています。送信内容は Formspree 上で処理されます（Formspree のプライバシーポリシーが適用されます）。</li>
-        <li data-i18n-html="privacy_li4"><b>アクセス解析</b>：閲覧状況の把握のため <b>GoatCounter</b>（プライバシー配慮型のアクセス解析）を利用しています。<b>Cookie は使用せず</b>、個人を特定する情報は取得しません。</li>
+        <li data-i18n-html="privacy_li3"><b>お問い合わせ</b>：お問い合わせフォームは <b>SSGform</b>（国産の外部フォーム送信サービス）を利用しています。送信内容は SSGform 上で処理されます（SSGform のプライバシーポリシーが適用されます）。</li>
+        <li data-i18n-html="privacy_li4"><b>アクセス解析</b>：現在、当サイトのページに外部のアクセス解析ツールは導入していません。導入する場合も、<b>Cookie は使用せず</b>個人を特定しない集計のみを行います。</li>
         <li data-i18n-html="privacy_li5"><b>Cookie / ローカル保存</b>：上記の目的以外で利用者を追跡する目的の Cookie は使用しません。</li>
       </ul>
       <p class="muted" data-i18n="privacy_updated">本ポリシーは予告なく変更される場合があります。最終更新：2026-07-22</p>
@@ -213,8 +213,8 @@ var I18N={
   privacy_p1:{ja:'当サイトは、利用者のプライバシーを尊重し、以下の方針でデータを取り扱います。',en:'This site respects your privacy and handles data under the following policy.'},
   privacy_li1:{ja:'<b>お気に入り（いいね）</b>：お使いのブラウザ内の <code>localStorage</code> にのみ保存され、<b>外部サーバーには送信されません</b>。ブラウザのデータを消すと消去されます。',en:'<b>Favorites (likes)</b>: stored only in your browser’s <code>localStorage</code> and <b>never sent to an external server</b>. Clearing your browser data erases them.'},
   privacy_li2:{ja:'<b>個人情報の収集</b>：会員登録・ログイン機能はなく、氏名やメールアドレス等を当サイトが直接収集・保存することはありません。',en:'<b>Collection of personal data</b>: there is no sign-up or login, and this site does not directly collect or store your name, email, etc.'},
-  privacy_li3:{ja:'<b>お問い合わせ</b>：お問い合わせフォームは <b>Formspree</b>（外部のフォーム送信サービス）を利用しています。送信内容は Formspree 上で処理されます（Formspree のプライバシーポリシーが適用されます）。',en:'<b>Contact</b>: the contact form uses <b>Formspree</b> (an external form-delivery service). Submissions are processed on Formspree (its own privacy policy applies).'},
-  privacy_li4:{ja:'<b>アクセス解析</b>：閲覧状況の把握のため <b>GoatCounter</b>（プライバシー配慮型のアクセス解析）を利用しています。<b>Cookie は使用せず</b>、個人を特定する情報は取得しません。',en:'<b>Analytics</b>: this site uses <b>GoatCounter</b> (a privacy-friendly analytics tool) to understand usage. It uses <b>no cookies</b> and collects no information that identifies individuals.'},
+  privacy_li3:{ja:'<b>お問い合わせ</b>：お問い合わせフォームは <b>SSGform</b>（国産の外部フォーム送信サービス）を利用しています。送信内容は SSGform 上で処理されます（SSGform のプライバシーポリシーが適用されます）。',en:'<b>Contact</b>: the contact form uses <b>SSGform</b> (an external form-delivery service based in Japan). Submissions are processed on SSGform (its own privacy policy applies).'},
+  privacy_li4:{ja:'<b>アクセス解析</b>：現在、当サイトのページに外部のアクセス解析ツールは導入していません。導入する場合も、<b>Cookie は使用せず</b>個人を特定しない集計のみを行います。',en:'<b>Analytics</b>: this site currently embeds no third-party analytics in its pages. If introduced later, it will use <b>no cookies</b> and collect only data that does not identify individuals.'},
   privacy_li5:{ja:'<b>Cookie / ローカル保存</b>：上記の目的以外で利用者を追跡する目的の Cookie は使用しません。',en:'<b>Cookies / local storage</b>: no cookies are used to track you for purposes beyond the above.'},
   privacy_updated:{ja:'本ポリシーは予告なく変更される場合があります。最終更新：2026-07-22',en:'This policy may change without notice. Last updated: 2026-07-22'},
   contact_h2:{ja:'お問い合わせ',en:'Contact'},
@@ -230,10 +230,10 @@ var I18N={
   lbl_body:{ja:'内容<span class="req">必須</span>',en:'Message<span class="req">required</span>'},
   ph_body:{ja:'お問い合わせ内容をご記入ください。',en:'Please write your message.'},
   submit:{ja:'▶ 送信する',en:'▶ Send'},
-  setup_note:{ja:'<b style="color:var(--pink)">設置メモ（公開前に対応）：</b> このフォームは無料サービス <b>Formspree</b> で送信します。<a href="https://formspree.io" target="_blank" rel="noopener">formspree.io</a> で無料登録し、作成したフォームのエンドポイント（<code>https://formspree.io/f/xxxxxxxx</code>）を、この <code>about.html</code> の <code>&lt;form action="…"&gt;</code> に貼り替えてください。IDをいただければこちらで設定します。',en:'<b style="color:var(--pink)">Setup note (do before publishing):</b> This form submits via the free service <b>Formspree</b>. Register free at <a href="https://formspree.io" target="_blank" rel="noopener">formspree.io</a> and replace the endpoint (<code>https://formspree.io/f/xxxxxxxx</code>) in the <code>&lt;form action="…"&gt;</code> of this <code>about.html</code>. Send me the ID and I can set it up.'},
+  setup_note:{ja:'<b style="color:var(--pink)">設置メモ：</b> このフォームは国産サービス <b>SSGform</b> で送信します。<a href="https://ssgform.com" target="_blank" rel="noopener">ssgform.com</a> で発行したエンドポイントを、この <code>about.html</code> の <code>&lt;form action="…"&gt;</code> に設定しています。',en:'<b style="color:var(--pink)">Setup note:</b> This form submits via the Japanese service <b>SSGform</b>. The endpoint issued at <a href="https://ssgform.com" target="_blank" rel="noopener">ssgform.com</a> is set in the <code>&lt;form action="…"&gt;</code> of this <code>about.html</code>.'},
   /* フォームの動的メッセージ */
   err_empty:{ja:'内容を入力してください。',en:'Please enter your message.'},
-  err_noaction:{ja:'送信先が未設定です（公開前に Formspree のフォームIDを設定してください）。',en:'The destination is not set (configure the Formspree form ID before publishing).'},
+  err_noaction:{ja:'送信先が未設定です（SSGform の送信先URLを設定してください）。',en:'The destination is not set (configure the SSGform endpoint URL).'},
   sending:{ja:'送信中…',en:'Sending…'},
   sent:{ja:'送信しました。ありがとうございます！',en:'Sent. Thank you!'},
   fail:{ja:'送信に失敗しました',en:'Failed to send'},
@@ -285,8 +285,5 @@ function applyLang(){
   });
 })();
 </script>
-
-<!-- アクセス解析：GoatCounter（Cookie不使用・個人を特定しない）。要 goatcounter.com で codictionary を登録 -->
-<script data-goatcounter="https://codictionary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
