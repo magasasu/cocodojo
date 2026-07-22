@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>このサイトについて — CODOJO</title>
-<meta name="description" content="CODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。HTML・CSS・JavaScript・jQuery を引いてその場で動かせる、無料のコード辞書です。">
+<title>このサイトについて — COCODOJO</title>
+<meta name="description" content="COCODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。HTML・CSS・JavaScript・jQuery を引いてその場で動かせる、無料のコード辞書です。">
 <meta name="theme-color" content="#0B0913">
 <meta name="author" content="Shoma Ito">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <!-- ★公開前に対応：YOUR-DOMAIN.example を実際の公開ドメインへ置換（canonical / og:url / og:image / twitter:image） -->
-<link rel="canonical" href="https://magasasu.github.io/codojo/about.html">
+<link rel="canonical" href="https://magasasu.github.io/cocodojo/about.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="CODOJO">
-<meta property="og:title" content="このサイトについて — CODOJO">
-<meta property="og:description" content="CODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。">
-<meta property="og:image" content="https://magasasu.github.io/codojo/ogp.png">
-<meta property="og:url" content="https://magasasu.github.io/codojo/about.html">
+<meta property="og:site_name" content="COCODOJO">
+<meta property="og:title" content="このサイトについて — COCODOJO">
+<meta property="og:description" content="COCODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。">
+<meta property="og:image" content="https://magasasu.github.io/cocodojo/ogp.png">
+<meta property="og:url" content="https://magasasu.github.io/cocodojo/about.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://magasasu.github.io/codojo/ogp.png">
+<meta name="twitter:image" content="https://magasasu.github.io/cocodojo/ogp.png">
 <style>
-  /* 色の役割は本体（css/codojo.css）と共通。
+  /* 色の役割は本体（css/cocodojo.css）と共通。
        --gold=主要アクション（送信） / --cyan=補助・リンク / --pink=強調 / --violet=見出しの識別
      以前はこのページだけ言語トグルが金・送信がシアンで、本体と主要色が反転していた */
   :root{
@@ -90,7 +90,7 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <span class="logo">CO<b>DOJO</b></span>
+    <span class="logo">COCO<b>DOJO</b></span>
     <span class="top-right">
       <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch to English">EN</button>
       <!-- about.html は常にルート直下にあるため相対パスでよい。
@@ -104,7 +104,7 @@
   <p class="lead" data-i18n="lead">HTML・CSS・JavaScript・jQuery を引いて、その場で動かして確かめられる、無料のコード辞書です。</p>
 
   <section id="about">
-    <h2 data-i18n="about_h2">CODOJO とは</h2>
+    <h2 data-i18n="about_h2">COCODOJO とは</h2>
     <div class="card">
       <p data-i18n-html="about_p1">「読んでも分からない」を<b>「見れば分かる」</b>に変えるための辞書です。プログラミング未経験の方でも、調べたその場で動く物を見て確かめられます。各項目は次の内容をそろえています。</p>
       <ul>
@@ -181,22 +181,22 @@
   </main>
 
   <footer class="foot">
-    <span>© 2026 CODOJO</span>
+    <span>© 2026 COCODOJO</span>
     <span class="r">v0.9 «BLACK-ICE» / 最終更新 2026-07-22 / Created by Shoma Ito</span>
   </footer>
 </div>
 <script>
-/* ============ 多言語（日本語 / English）— codojo と同じ cn_lang を共有 ============ */
+/* ============ 多言語（日本語 / English）— cocodojo と同じ cn_lang を共有 ============ */
 var LANG='ja';
 try{ var saved=localStorage.getItem('cn_lang'); LANG = saved || (/^ja/i.test(navigator.language||navigator.userLanguage||'')?'ja':'en'); }catch(e){}
 
 var I18N={
-  doc_title:{ja:'このサイトについて — CODOJO',en:'About — CODOJO'},
-  doc_desc:{ja:'CODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。HTML・CSS・JavaScript・jQuery を引いてその場で動かせる、無料のコード辞書です。',en:'About CODOJO — how to use, privacy policy and contact. A free code dictionary for HTML, CSS, JavaScript and jQuery you can run on the spot.'},
+  doc_title:{ja:'このサイトについて — COCODOJO',en:'About — COCODOJO'},
+  doc_desc:{ja:'COCODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。HTML・CSS・JavaScript・jQuery を引いてその場で動かせる、無料のコード辞書です。',en:'About COCODOJO — how to use, privacy policy and contact. A free code dictionary for HTML, CSS, JavaScript and jQuery you can run on the spot.'},
   back:{ja:'← 辞書へ戻る',en:'← Back to the dictionary'},
   h1:{ja:'このサイトについて',en:'About this site'},
   lead:{ja:'HTML・CSS・JavaScript・jQuery を引いて、その場で動かして確かめられる、無料のコード辞書です。',en:'A free code dictionary for HTML, CSS, JavaScript and jQuery — look anything up and run it on the spot.'},
-  about_h2:{ja:'CODOJO とは',en:'What is CODOJO'},
+  about_h2:{ja:'COCODOJO とは',en:'What is COCODOJO'},
   about_p1:{ja:'「読んでも分からない」を<b>「見れば分かる」</b>に変えるための辞書です。プログラミング未経験の方でも、調べたその場で動く物を見て確かめられます。各項目は次の内容をそろえています。',en:'A dictionary built to turn <b>“I read it but I don’t get it”</b> into <b>“now I see it”</b>. Even with no programming experience, you can look something up and watch it run right there. Every topic comes with:'},
   about_li1:{ja:'タグ／プロパティ／命令の<b>意味</b>と<b>ルール</b>・<b>使い方</b>',en:'The <b>meaning</b>, <b>rules</b>, and <b>usage</b> of tags / properties / commands'},
   about_li2:{ja:'そのコードで使う<b>言葉の解説</b>',en:'An <b>explanation of the words</b> used in that code'},
