@@ -1,8 +1,8 @@
-# js_dojo — CODING NEON
+# CODOJO
 
 HTML / CSS / JavaScript の用語やスニペットをネオン風UIで**引く**ためのリファレンス（辞書）サイト。
 
-🔗 **公開URL**: https://magasasu.github.io/js_dojo/
+🔗 **公開URL**: https://magasasu.github.io/codojo/
 
 ## 特徴
 - 日本語 / 英語の表示切り替え

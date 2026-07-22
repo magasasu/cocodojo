@@ -6002,8 +6002,8 @@ const UI={
   toggle_to:{ja:'EN',en:'日本語'},
   toggle_aria:{ja:'Switch to English',en:'日本語に切り替え'},
   ls_full:{ja:'保存できる量の上限に達したため、これ以上は保存していません（練習用の一時保存です）。',en:'The storage limit was reached, so nothing further was saved (this is temporary practice storage).'},
-  doc_title:{ja:'CODING NEON — 動くコード辞書｜HTML・CSS・JavaScript・jQuery',en:'CODING NEON — a living code dictionary｜HTML, CSS, JavaScript & jQuery'},
-  doc_desc:{ja:'CODING NEON は、HTML・CSS・JavaScript・jQuery を引いてその場で動かせる無料のコード辞書。タグ・プロパティ・命令の意味を、丁寧な説明とすぐ動くプレビューで確かめられます。',en:'CODING NEON is a free code dictionary for HTML, CSS, JavaScript and jQuery — look anything up and run it on the spot, with clear explanations and instant live previews.'}
+  doc_title:{ja:'CODOJO — 動くコード辞書｜HTML・CSS・JavaScript・jQuery',en:'CODOJO — a living code dictionary｜HTML, CSS, JavaScript & jQuery'},
+  doc_desc:{ja:'CODOJO は、HTML・CSS・JavaScript・jQuery を引いてその場で動かせる無料のコード辞書。タグ・プロパティ・命令の意味を、丁寧な説明とすぐ動くプレビューで確かめられます。',en:'CODOJO is a free code dictionary for HTML, CSS, JavaScript and jQuery — look anything up and run it on the spot, with clear explanations and instant live previews.'}
 };
 function t(k){ const e=UI[k]; return e?(e[LANG]!=null?e[LANG]:e.ja):''; }
 function applyLang(){

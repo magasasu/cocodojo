@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>このサイトについて — CODING NEON</title>
-<meta name="description" content="CODING NEON の紹介・使い方・プライバシーポリシー・お問い合わせ。HTML・CSS・JavaScript・jQuery を引いてその場で動かせる、無料のコード辞書です。">
+<title>このサイトについて — CODOJO</title>
+<meta name="description" content="CODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。HTML・CSS・JavaScript・jQuery を引いてその場で動かせる、無料のコード辞書です。">
 <meta name="theme-color" content="#0B0913">
 <meta name="author" content="Shoma Ito">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <!-- ★公開前に対応：YOUR-DOMAIN.example を実際の公開ドメインへ置換（canonical / og:url / og:image / twitter:image） -->
-<link rel="canonical" href="https://magasasu.github.io/js_dojo/about.html">
+<link rel="canonical" href="https://magasasu.github.io/codojo/about.html">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="CODING NEON">
-<meta property="og:title" content="このサイトについて — CODING NEON">
-<meta property="og:description" content="CODING NEON の紹介・使い方・プライバシーポリシー・お問い合わせ。">
-<meta property="og:image" content="https://magasasu.github.io/js_dojo/ogp.png">
-<meta property="og:url" content="https://magasasu.github.io/js_dojo/about.html">
+<meta property="og:site_name" content="CODOJO">
+<meta property="og:title" content="このサイトについて — CODOJO">
+<meta property="og:description" content="CODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。">
+<meta property="og:image" content="https://magasasu.github.io/codojo/ogp.png">
+<meta property="og:url" content="https://magasasu.github.io/codojo/about.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://magasasu.github.io/js_dojo/ogp.png">
+<meta name="twitter:image" content="https://magasasu.github.io/codojo/ogp.png">
 <style>
-  /* 色の役割は本体（css/js_dojo.css）と共通。
+  /* 色の役割は本体（css/codojo.css）と共通。
        --gold=主要アクション（送信） / --cyan=補助・リンク / --pink=強調 / --violet=見出しの識別
      以前はこのページだけ言語トグルが金・送信がシアンで、本体と主要色が反転していた */
   :root{
@@ -90,7 +90,7 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <span class="logo">CODING <b>NEON</b></span>
+    <span class="logo">CO<b>DOJO</b></span>
     <span class="top-right">
       <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch to English">EN</button>
       <!-- about.html は常にルート直下にあるため相対パスでよい。
@@ -104,7 +104,7 @@
   <p class="lead" data-i18n="lead">HTML・CSS・JavaScript・jQuery を引いて、その場で動かして確かめられる、無料のコード辞書です。</p>
 
   <section id="about">
-    <h2 data-i18n="about_h2">CODING NEON とは</h2>
+    <h2 data-i18n="about_h2">CODOJO とは</h2>
     <div class="card">
       <p data-i18n-html="about_p1">「読んでも分からない」を<b>「見れば分かる」</b>に変えるための辞書です。プログラミング未経験の方でも、調べたその場で動く物を見て確かめられます。各項目は次の内容をそろえています。</p>
       <ul>
@@ -149,8 +149,8 @@
     <h2 data-i18n="contact_h2">お問い合わせ</h2>
     <p data-i18n="contact_p">ご質問・誤りの報告・ご要望は、下のフォームからお送りください。返信が必要な場合はメールアドレスをご記入ください。</p>
 
-    <!-- 送信先：無料の Formspree を利用（バックエンド不要）。公開前に action の xxxxxx を自分のフォームIDに置き換えること -->
-    <form id="contactForm" class="form" action="https://formspree.io/f/xxxxxxxx" method="POST">
+    <!-- 送信先：国産フォームサービス SSGform（バックエンド不要）。Ajax送信は X-Requested-With ヘッダーで判定される -->
+    <form id="contactForm" class="form" action="https://ssgform.com/s/mO80tNN6ooXr" method="POST">
       <div class="field">
         <label for="cf-name" data-i18n-html="lbl_name">お名前<span class="opt">（任意）</span></label>
         <input class="input" type="text" id="cf-name" name="name" placeholder="例）山田 太郎" data-i18n-ph="ph_name" autocomplete="name">
@@ -177,31 +177,26 @@
       <p class="form-status" id="cf-status" role="status" aria-live="polite"></p>
     </form>
 
-    <p class="setup-note" data-i18n-html="setup_note">
-      <b style="color:var(--pink)">設置メモ（公開前に対応）：</b>
-      このフォームは無料サービス <b>Formspree</b> で送信します。<a href="https://formspree.io" target="_blank" rel="noopener">formspree.io</a> で無料登録し、作成したフォームの
-      エンドポイント（<code>https://formspree.io/f/xxxxxxxx</code>）を、この <code>about.html</code> の <code>&lt;form action="…"&gt;</code> に貼り替えてください。IDをいただければこちらで設定します。
-    </p>
   </section>
   </main>
 
   <footer class="foot">
-    <span>© 2026 CODING NEON</span>
+    <span>© 2026 CODOJO</span>
     <span class="r">v0.9 «BLACK-ICE» / 最終更新 2026-07-22 / Created by Shoma Ito</span>
   </footer>
 </div>
 <script>
-/* ============ 多言語（日本語 / English）— js_dojo と同じ cn_lang を共有 ============ */
+/* ============ 多言語（日本語 / English）— codojo と同じ cn_lang を共有 ============ */
 var LANG='ja';
 try{ var saved=localStorage.getItem('cn_lang'); LANG = saved || (/^ja/i.test(navigator.language||navigator.userLanguage||'')?'ja':'en'); }catch(e){}
 
 var I18N={
-  doc_title:{ja:'このサイトについて — CODING NEON',en:'About — CODING NEON'},
-  doc_desc:{ja:'CODING NEON の紹介・使い方・プライバシーポリシー・お問い合わせ。HTML・CSS・JavaScript・jQuery を引いてその場で動かせる、無料のコード辞書です。',en:'About CODING NEON — how to use, privacy policy and contact. A free code dictionary for HTML, CSS, JavaScript and jQuery you can run on the spot.'},
+  doc_title:{ja:'このサイトについて — CODOJO',en:'About — CODOJO'},
+  doc_desc:{ja:'CODOJO の紹介・使い方・プライバシーポリシー・お問い合わせ。HTML・CSS・JavaScript・jQuery を引いてその場で動かせる、無料のコード辞書です。',en:'About CODOJO — how to use, privacy policy and contact. A free code dictionary for HTML, CSS, JavaScript and jQuery you can run on the spot.'},
   back:{ja:'← 辞書へ戻る',en:'← Back to the dictionary'},
   h1:{ja:'このサイトについて',en:'About this site'},
   lead:{ja:'HTML・CSS・JavaScript・jQuery を引いて、その場で動かして確かめられる、無料のコード辞書です。',en:'A free code dictionary for HTML, CSS, JavaScript and jQuery — look anything up and run it on the spot.'},
-  about_h2:{ja:'CODING NEON とは',en:'What is CODING NEON'},
+  about_h2:{ja:'CODOJO とは',en:'What is CODOJO'},
   about_p1:{ja:'「読んでも分からない」を<b>「見れば分かる」</b>に変えるための辞書です。プログラミング未経験の方でも、調べたその場で動く物を見て確かめられます。各項目は次の内容をそろえています。',en:'A dictionary built to turn <b>“I read it but I don’t get it”</b> into <b>“now I see it”</b>. Even with no programming experience, you can look something up and watch it run right there. Every topic comes with:'},
   about_li1:{ja:'タグ／プロパティ／命令の<b>意味</b>と<b>ルール</b>・<b>使い方</b>',en:'The <b>meaning</b>, <b>rules</b>, and <b>usage</b> of tags / properties / commands'},
   about_li2:{ja:'そのコードで使う<b>言葉の解説</b>',en:'An <b>explanation of the words</b> used in that code'},
@@ -280,7 +275,7 @@ function applyLang(){
       return;
     }
     submit.disabled=true; var label=submit.textContent; submit.textContent=T('sending');
-    fetch(form.action,{ method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} })
+    fetch(form.action,{ method:'POST', body:new FormData(form), headers:{'Accept':'application/json','X-Requested-With':'XMLHttpRequest'} })
       .then(function(res){
         if(res.ok){ form.reset(); status.className='form-status ok'; status.textContent=T('sent'); }
         else{ return res.json().then(function(d){ throw new Error((d&&d.errors&&d.errors[0]&&d.errors[0].message)||T('fail')); }); }
