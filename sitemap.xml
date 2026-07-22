@@ -2,13 +2,13 @@
 <!-- ★公開前に対応：YOUR-DOMAIN.example を実際の公開ドメインへ置き換える -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://magasasu.github.io/cocodojo/</loc>
+    <loc>https://magasasu.github.io/codictionary/</loc>
     <lastmod>2026-07-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://magasasu.github.io/cocodojo/about.html</loc>
+    <loc>https://magasasu.github.io/codictionary/about.html</loc>
     <lastmod>2026-07-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

@@ -1,8 +1,8 @@
-# COCODOJO
+# CoDictionary
 
 HTML / CSS / JavaScript の用語やスニペットをネオン風UIで**引く**ためのリファレンス（辞書）サイト。
 
-🔗 **公開URL**: https://magasasu.github.io/cocodojo/
+🔗 **公開URL**: https://magasasu.github.io/codictionary/
 
 ## 特徴
 - 日本語 / 英語の表示切り替え

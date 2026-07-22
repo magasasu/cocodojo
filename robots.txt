@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # ★公開前に対応：YOUR-DOMAIN.example を実際の公開ドメインへ置き換える
-Sitemap: https://magasasu.github.io/cocodojo/sitemap.xml
+Sitemap: https://magasasu.github.io/codictionary/sitemap.xml
