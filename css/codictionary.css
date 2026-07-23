@@ -285,7 +285,8 @@
   .log .idle{color:var(--dim2);}
 
   /* ===== 最下部フッター（著作権／版・更新・製作者） ===== */
-  .ticker{min-height:30px;flex:none;display:flex;align-items:center;gap:12px;padding:0 16px;overflow:hidden;white-space:nowrap;
+  /* SNSチップのネオンが上下左右で切れないよう、帯の高さと左右余白を確保する（overflow:hidden がグローを刈る） */
+  .ticker{min-height:44px;flex:none;display:flex;align-items:center;gap:12px;padding:0 22px;overflow:hidden;white-space:nowrap;
       border-top:1px solid var(--edge);background:linear-gradient(90deg,rgba(176,132,255,.10),rgba(245,194,74,.07),rgba(79,230,230,.08));}
   .ticker .foot-copy{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.03em;text-shadow:0 0 8px rgba(245,194,74,.35);}
   .ticker .foot-nav{display:flex;align-items:center;gap:12px;}
@@ -293,19 +294,36 @@
   .ticker .foot-nav a{display:inline-flex;align-items:center;min-height:24px;padding:0 3px;font-family:var(--jp);font-size:12px;color:var(--dim);text-decoration:none;border-bottom:1px solid transparent;}
   .ticker .foot-nav a:hover{color:var(--cyan);border-bottom-color:var(--cyan);}
   .ticker .foot-nav a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
-  .ticker .foot-right{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:0;font-size:12px;color:var(--dim);overflow:hidden;}
+  /* 省略記号は .foot-upd 側で効かせる。ここで hidden にするとチップのグローが切れる */
+  .ticker .foot-right{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:0;font-size:12px;color:var(--dim);}
   .ticker .foot-ver{font-family:var(--mono);color:var(--cyan);letter-spacing:.02em;text-shadow:0 0 8px rgba(79,230,230,.4);}
   .ticker .foot-sep{color:var(--edge2);}
   .ticker .foot-upd{font-family:var(--jp);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;}
   .ticker .foot-upd b{color:var(--dim);font-weight:700;}
   .ticker .foot-author{font-family:var(--jp);}
   .ticker .foot-author b{color:var(--gold);font-weight:700;}
+  /* SNS：ネオンのチップ（Instagram=ピンク／X=シアン）。フッターの中で最も目立たせる */
   .ticker .foot-sns{display:flex;align-items:center;gap:10px;flex:none;}
-  .ticker .foot-sns a{display:inline-flex;align-items:center;min-height:24px;
-    font-family:var(--mono);font-size:12px;color:var(--dim);text-decoration:none;
-    border-bottom:1px solid transparent;}
-  .ticker .foot-sns a:hover{color:var(--cyan);border-bottom-color:var(--cyan);}
+  .ticker .foot-sns a{display:inline-flex;align-items:center;min-height:24px;padding:3px 13px;
+    font-family:var(--mono);font-size:12px;font-weight:800;letter-spacing:.06em;
+    text-decoration:none;border-radius:999px;transition:color .18s,transform .18s,border-color .18s,box-shadow .18s;}
+  .ticker .foot-sns .sns-ig{color:var(--pink);border:1px solid rgba(255,139,208,.55);background:rgba(244,91,214,.10);
+    text-shadow:0 0 10px rgba(255,139,208,.85),0 0 22px rgba(244,91,214,.5);
+    animation:snsGlowIg 3.4s ease-in-out infinite;}
+  .ticker .foot-sns .sns-x{color:var(--cyan);border:1px solid rgba(79,230,230,.55);background:rgba(79,230,230,.10);
+    text-shadow:0 0 10px rgba(79,230,230,.85),0 0 22px rgba(79,230,230,.5);
+    animation:snsGlowX 3.4s ease-in-out infinite .8s;}
+  .ticker .foot-sns a:hover{color:#fff;transform:translateY(-1px);}
+  .ticker .foot-sns .sns-ig:hover{border-color:var(--pink);box-shadow:0 0 26px rgba(244,91,214,.8),inset 0 0 16px rgba(244,91,214,.28);}
+  .ticker .foot-sns .sns-x:hover{border-color:var(--cyan);box-shadow:0 0 26px rgba(79,230,230,.8),inset 0 0 16px rgba(79,230,230,.28);}
   .ticker .foot-sns a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+  /* 呼吸するグロー。動きを減らす設定では上の 2.3.3 ブロックで自動的に止まる */
+  @keyframes snsGlowIg{
+    0%,100%{box-shadow:0 0 12px rgba(244,91,214,.32),inset 0 0 12px rgba(244,91,214,.12);}
+    50%{box-shadow:0 0 24px rgba(244,91,214,.7),inset 0 0 16px rgba(244,91,214,.24);}}
+  @keyframes snsGlowX{
+    0%,100%{box-shadow:0 0 12px rgba(79,230,230,.32),inset 0 0 12px rgba(79,230,230,.12);}
+    50%{box-shadow:0 0 24px rgba(79,230,230,.7),inset 0 0 16px rgba(79,230,230,.24);}}
 
   /* ===== ネオン装飾（走査線なし・グローのみ） ===== */
   /* ヘッダー下端のネオンライン */
@@ -420,7 +438,7 @@
     .header .about-link.header-about{min-height:40px;}
     .ticker .foot-copy{order:2;font-size:14px;}
     .ticker .foot-right{order:3;margin-left:0;flex-wrap:wrap;justify-content:center;gap:6px 10px;font-size:12.5px;}
-    .ticker .foot-sns a{min-height:44px;padding:0 6px;font-size:13px;border-bottom-color:var(--edge2);}
+    .ticker .foot-sns a{min-height:44px;padding:0 18px;font-size:13.5px;}
     /* --- 下段パネル：見出しタップで開閉するアコーディオン（既定は開いた状態） --- */
     .p-log .pane-toggle,.p-js .pane-toggle,.p-html .pane-toggle,.p-css .pane-toggle{cursor:pointer;user-select:none;}
     .p-log .phead .dot,.p-js .phead .dot,.p-html .phead .dot,.p-css .phead .dot{display:none;}

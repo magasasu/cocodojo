@@ -15,10 +15,10 @@
 <meta property="og:site_name" content="CoDictionary">
 <meta property="og:title" content="このサイトについて — CoDictionary">
 <meta property="og:description" content="CoDictionary の紹介・使い方・プライバシーポリシー・お問い合わせ。">
-<meta property="og:image" content="https://magasasu.github.io/codictionary/ogp.png">
+<meta property="og:image" content="https://magasasu.github.io/codictionary/ogp-v2.png">
 <meta property="og:url" content="https://magasasu.github.io/codictionary/about.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://magasasu.github.io/codictionary/ogp.png">
+<meta name="twitter:image" content="https://magasasu.github.io/codictionary/ogp-v2.png">
 <style>
   /* 色の役割は本体（css/codictionary.css）と共通。
        --gold=主要アクション（送信） / --cyan=補助・リンク / --pink=強調 / --violet=見出しの識別
@@ -90,12 +90,31 @@
   .credit-line code{font-family:var(--mono);font-size:13px;color:var(--ink);white-space:normal;overflow-wrap:anywhere;}
   .credit-author{margin-top:12px;font-size:13px;color:var(--dim);}
   .credit-author b{color:var(--gold);font-weight:700;}
-  .about-sns,footer .foot-sns{margin-top:10px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
-  footer .foot-sns{margin-top:0;gap:12px;}
-  .about-sns a,footer .foot-sns a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--mono);font-size:13px;color:var(--cyan);text-decoration:none;border-bottom:1px solid transparent;}
-  footer .foot-sns a{min-height:24px;font-size:12px;color:var(--dim);}
-  .about-sns a:hover,footer .foot-sns a:hover{color:var(--cyan);border-bottom-color:var(--cyan);}
+  /* SNS：ネオンのチップ（Instagram=ピンク／X=シアン）。index.html のフッターと見た目を揃える */
+  .about-sns,footer .foot-sns{margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+  footer .foot-sns{margin-top:0;}
+  .about-sns a,footer .foot-sns a{display:inline-flex;align-items:center;min-height:44px;padding:6px 18px;
+    font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:.06em;
+    text-decoration:none;border-radius:999px;transition:color .18s,transform .18s,border-color .18s,box-shadow .18s;}
+  footer .foot-sns a{min-height:30px;padding:4px 14px;font-size:12px;}
+  .about-sns .sns-ig,footer .foot-sns .sns-ig{color:var(--pink);border:1px solid rgba(255,139,208,.55);background:rgba(244,91,214,.10);
+    text-shadow:0 0 10px rgba(255,139,208,.85),0 0 22px rgba(244,91,214,.5);
+    animation:snsGlowIg 3.4s ease-in-out infinite;}
+  .about-sns .sns-x,footer .foot-sns .sns-x{color:var(--cyan);border:1px solid rgba(79,230,230,.55);background:rgba(79,230,230,.10);
+    text-shadow:0 0 10px rgba(79,230,230,.85),0 0 22px rgba(79,230,230,.5);
+    animation:snsGlowX 3.4s ease-in-out infinite .8s;}
+  .about-sns a:hover,footer .foot-sns a:hover{color:#fff;transform:translateY(-1px);}
+  .about-sns .sns-ig:hover,footer .foot-sns .sns-ig:hover{border-color:var(--pink);box-shadow:0 0 26px rgba(244,91,214,.8),inset 0 0 16px rgba(244,91,214,.28);}
+  .about-sns .sns-x:hover,footer .foot-sns .sns-x:hover{border-color:var(--cyan);box-shadow:0 0 26px rgba(79,230,230,.8),inset 0 0 16px rgba(79,230,230,.28);}
   .about-sns a:focus-visible,footer .foot-sns a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+  @keyframes snsGlowIg{
+    0%,100%{box-shadow:0 0 12px rgba(244,91,214,.32),inset 0 0 12px rgba(244,91,214,.12);}
+    50%{box-shadow:0 0 24px rgba(244,91,214,.7),inset 0 0 16px rgba(244,91,214,.24);}}
+  @keyframes snsGlowX{
+    0%,100%{box-shadow:0 0 12px rgba(79,230,230,.32),inset 0 0 12px rgba(79,230,230,.12);}
+    50%{box-shadow:0 0 24px rgba(79,230,230,.7),inset 0 0 16px rgba(79,230,230,.24);}}
+  @media (prefers-reduced-motion: reduce){
+    .about-sns a,footer .foot-sns a{animation:none;}}
   /* 英語表示は行間をやや詰める（日本語向けの行間だと間延びするため） */
   :root[data-lang="en"] body{line-height:1.65;}
   :root[data-lang="en"] li{line-height:1.6;}
@@ -156,8 +175,8 @@
       <p class="credit-line"><code data-i18n="credit_line">CoDictionary（マガサス / Shoma Ito）https://magasasu.github.io/codictionary/</code></p>
       <p class="credit-author"><span data-i18n="credit_by">制作</span> <b data-i18n="foot_author">マガサス（Shoma Ito）</b></p>
       <p class="about-sns">
-        <a href="https://www.instagram.com/magasasu719/" rel="me noopener" target="_blank">Instagram</a>
-        <a href="https://x.com/magasasu719" rel="me noopener" target="_blank">X</a>
+        <a class="sns-ig" href="https://www.instagram.com/magasasu719/" rel="me noopener" target="_blank">Instagram</a>
+        <a class="sns-x" href="https://x.com/magasasu719" rel="me noopener" target="_blank">X</a>
       </p>
     </div>
   </section>
@@ -215,8 +234,8 @@
   <footer class="foot">
     <span>© 2026 CoDictionary</span>
     <span class="foot-sns">
-      <a href="https://www.instagram.com/magasasu719/" rel="me noopener" target="_blank">Instagram</a>
-      <a href="https://x.com/magasasu719" rel="me noopener" target="_blank">X</a>
+      <a class="sns-ig" href="https://www.instagram.com/magasasu719/" rel="me noopener" target="_blank">Instagram</a>
+      <a class="sns-x" href="https://x.com/magasasu719" rel="me noopener" target="_blank">X</a>
     </span>
     <span class="r">v0.9 «BLACK-ICE» / <span data-i18n="foot_upd">最終更新</span> 2026-07-23 / <span data-i18n="credit_by">制作</span> <b data-i18n="foot_author">マガサス（Shoma Ito）</b></span>
   </footer>
