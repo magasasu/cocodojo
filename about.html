@@ -82,6 +82,20 @@
   .setup-note{margin-top:14px;background:var(--panel);border:1px dashed var(--edge2);border-radius:10px;padding:14px 16px;color:var(--dim);font-size:12.5px;}
   footer.foot{margin-top:56px;padding-top:16px;border-top:1px solid var(--edge);color:var(--dim2);font-size:12px;font-family:var(--mono);display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
   footer .r{margin-left:auto;color:var(--dim);}
+  footer.foot b{color:var(--gold);font-weight:700;}
+  /* ライセンス・クレジット */
+  .credit-label{margin-top:14px;font-size:12.5px;color:var(--dim2);}
+  /* 貼り付けて使う1行なので、折り返してでも全文を見せる（横スクロールで隠さない） */
+  .credit-line{margin-top:6px;background:var(--panel);border:1px solid var(--edge2);border-radius:9px;padding:10px 12px;}
+  .credit-line code{font-family:var(--mono);font-size:13px;color:var(--ink);white-space:normal;overflow-wrap:anywhere;}
+  .credit-author{margin-top:12px;font-size:13px;color:var(--dim);}
+  .credit-author b{color:var(--gold);font-weight:700;}
+  .about-sns,footer .foot-sns{margin-top:10px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+  footer .foot-sns{margin-top:0;gap:12px;}
+  .about-sns a,footer .foot-sns a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--mono);font-size:13px;color:var(--cyan);text-decoration:none;border-bottom:1px solid transparent;}
+  footer .foot-sns a{min-height:24px;font-size:12px;color:var(--dim);}
+  .about-sns a:hover,footer .foot-sns a:hover{color:var(--cyan);border-bottom-color:var(--cyan);}
+  .about-sns a:focus-visible,footer .foot-sns a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
   /* 英語表示は行間をやや詰める（日本語向けの行間だと間延びするため） */
   :root[data-lang="en"] body{line-height:1.65;}
   :root[data-lang="en"] li{line-height:1.6;}
@@ -130,6 +144,24 @@
     </div>
   </section>
 
+  <section id="license">
+    <h2 data-i18n="license_h2">ライセンス・クレジット</h2>
+    <div class="card">
+      <ul>
+        <li data-i18n-html="license_li1"><b>コードは自由に使えます</b>（表示不要・商用利用可）。掲載しているサンプルコードは、コピー・改変・再配布して構いません。</li>
+        <li data-i18n-html="license_li2"><b>文章</b>（解説・使う言葉・注意書き）は、出典を示した引用は歓迎しますが、<b>全文の転載・再配布はご遠慮ください</b>。</li>
+        <li data-i18n-html="license_li3"><b>紹介・シェアは歓迎です。</b>ブログ・SNS・記事などで取り上げていただく場合、および文章を引用する場合は、<b>下記のクレジット表記をお願いします</b>。</li>
+      </ul>
+      <p class="credit-label" data-i18n="credit_label">クレジット表記（このままコピーしてお使いください）</p>
+      <p class="credit-line"><code data-i18n="credit_line">CoDictionary（マガサス / Shoma Ito）https://magasasu.github.io/codictionary/</code></p>
+      <p class="credit-author"><span data-i18n="credit_by">制作</span> <b data-i18n="foot_author">マガサス（Shoma Ito）</b></p>
+      <p class="about-sns">
+        <a href="https://www.instagram.com/magasasu719/" rel="me noopener" target="_blank">Instagram</a>
+        <a href="https://x.com/magasasu719" rel="me noopener" target="_blank">X</a>
+      </p>
+    </div>
+  </section>
+
   <section id="privacy">
     <h2 data-i18n="privacy_h2">プライバシーポリシー</h2>
     <div class="card">
@@ -141,7 +173,7 @@
         <li data-i18n-html="privacy_li4"><b>アクセス解析</b>：閲覧状況の把握のため <b>Counter.dev</b>（プライバシー配慮型のアクセス解析）を利用しています。<b>Cookie は使用せず</b>、個人を特定する情報は取得しません。</li>
         <li data-i18n-html="privacy_li5"><b>Cookie / ローカル保存</b>：上記の目的以外で利用者を追跡する目的の Cookie は使用しません。</li>
       </ul>
-      <p class="muted" data-i18n="privacy_updated">本ポリシーは予告なく変更される場合があります。最終更新：2026-07-22</p>
+      <p class="muted" data-i18n="privacy_updated">本ポリシーは予告なく変更される場合があります。最終更新：2026-07-23</p>
     </div>
   </section>
 
@@ -182,7 +214,11 @@
 
   <footer class="foot">
     <span>© 2026 CoDictionary</span>
-    <span class="r">v0.9 «BLACK-ICE» / 最終更新 2026-07-22 / Created by Shoma Ito</span>
+    <span class="foot-sns">
+      <a href="https://www.instagram.com/magasasu719/" rel="me noopener" target="_blank">Instagram</a>
+      <a href="https://x.com/magasasu719" rel="me noopener" target="_blank">X</a>
+    </span>
+    <span class="r">v0.9 «BLACK-ICE» / <span data-i18n="foot_upd">最終更新</span> 2026-07-23 / <span data-i18n="credit_by">制作</span> <b data-i18n="foot_author">マガサス（Shoma Ito）</b></span>
   </footer>
 </div>
 <script>
@@ -209,6 +245,15 @@ var I18N={
   usage_li3:{ja:'項目を選ぶと、説明・使う言葉・コード・プレビューが表示される',en:'Choose a topic to show its explanation, the words it uses, its code, and a preview'},
   usage_li4:{ja:'<b>コード窓</b>を編集すると、<b>すぐにプレビューへ反映</b>される',en:'Edit the <b>code panes</b> and it <b>updates the preview instantly</b>'},
   usage_li5:{ja:'よく引く項目は <b>♡</b> でお気に入りに（「♥ いいね」タブに、言語をまたいでまとまります）',en:'Mark topics you look up often with <b>♡</b> (they collect in the “♥ Likes” tab, across all languages)'},
+  license_h2:{ja:'ライセンス・クレジット',en:'License & credit'},
+  license_li1:{ja:'<b>コードは自由に使えます</b>（表示不要・商用利用可）。掲載しているサンプルコードは、コピー・改変・再配布して構いません。',en:'<b>The code is free to use</b> (no attribution required, commercial use OK). You may copy, modify and redistribute any sample code on this site.'},
+  license_li2:{ja:'<b>文章</b>（解説・使う言葉・注意書き）は、出典を示した引用は歓迎しますが、<b>全文の転載・再配布はご遠慮ください</b>。',en:'<b>The written text</b> (explanations, glossaries, cautions) may be quoted with a source, but <b>please do not repost or redistribute it in full</b>.'},
+  license_li3:{ja:'<b>紹介・シェアは歓迎です。</b>ブログ・SNS・記事などで取り上げていただく場合、および文章を引用する場合は、<b>下記のクレジット表記をお願いします</b>。',en:'<b>Sharing this site is very welcome.</b> If you feature it on a blog, on social media or in an article, or quote the text, <b>please include the credit below</b>.'},
+  credit_label:{ja:'クレジット表記（このままコピーしてお使いください）',en:'Credit (copy and paste as is)'},
+  credit_line:{ja:'CoDictionary（マガサス / Shoma Ito）https://magasasu.github.io/codictionary/',en:'CoDictionary (Magasasu / Shoma Ito) https://magasasu.github.io/codictionary/'},
+  credit_by:{ja:'制作',en:'Created by'},
+  foot_author:{ja:'マガサス（Shoma Ito）',en:'Magasasu (Shoma Ito)'},
+  foot_upd:{ja:'最終更新',en:'Last updated'},
   privacy_h2:{ja:'プライバシーポリシー',en:'Privacy policy'},
   privacy_p1:{ja:'当サイトは、利用者のプライバシーを尊重し、以下の方針でデータを取り扱います。',en:'This site respects your privacy and handles data under the following policy.'},
   privacy_li1:{ja:'<b>お気に入り（いいね）</b>：お使いのブラウザ内の <code>localStorage</code> にのみ保存され、<b>外部サーバーには送信されません</b>。ブラウザのデータを消すと消去されます。',en:'<b>Favorites (likes)</b>: stored only in your browser’s <code>localStorage</code> and <b>never sent to an external server</b>. Clearing your browser data erases them.'},
@@ -216,7 +261,7 @@ var I18N={
   privacy_li3:{ja:'<b>お問い合わせ</b>：お問い合わせフォームは <b>SSGform</b>（国産の外部フォーム送信サービス）を利用しています。送信内容は SSGform 上で処理されます（SSGform のプライバシーポリシーが適用されます）。',en:'<b>Contact</b>: the contact form uses <b>SSGform</b> (an external form-delivery service based in Japan). Submissions are processed on SSGform (its own privacy policy applies).'},
   privacy_li4:{ja:'<b>アクセス解析</b>：閲覧状況の把握のため <b>Counter.dev</b>（プライバシー配慮型のアクセス解析）を利用しています。<b>Cookie は使用せず</b>、個人を特定する情報は取得しません。',en:'<b>Analytics</b>: this site uses <b>Counter.dev</b> (a privacy-friendly analytics tool) to understand usage. It uses <b>no cookies</b> and collects no information that identifies individuals.'},
   privacy_li5:{ja:'<b>Cookie / ローカル保存</b>：上記の目的以外で利用者を追跡する目的の Cookie は使用しません。',en:'<b>Cookies / local storage</b>: no cookies are used to track you for purposes beyond the above.'},
-  privacy_updated:{ja:'本ポリシーは予告なく変更される場合があります。最終更新：2026-07-22',en:'This policy may change without notice. Last updated: 2026-07-22'},
+  privacy_updated:{ja:'本ポリシーは予告なく変更される場合があります。最終更新：2026-07-23',en:'This policy may change without notice. Last updated: 2026-07-23'},
   contact_h2:{ja:'お問い合わせ',en:'Contact'},
   contact_p:{ja:'ご質問・誤りの報告・ご要望は、下のフォームからお送りください。返信が必要な場合はメールアドレスをご記入ください。',en:'Send questions, error reports, or requests via the form below. Include your email if you need a reply.'},
   lbl_name:{ja:'お名前<span class="opt">（任意）</span>',en:'Name<span class="opt">(optional)</span>'},
